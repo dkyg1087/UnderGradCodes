@@ -1,20 +1,20 @@
 #include<iostream>
 #include<vector>
-#include <utility>
+#include<utility>
 using namespace std;
 typedef struct Tree *tpt;
 struct Tree {
     int data;
     tpt leftChild=NULL, rightChild=NULL;
 };
-pair<tpt,tpt> find(tpt treept,int targ){
+/*pair<tpt,tpt> find(tpt treept,int targ){
     if(treept==NULL)return NULL;
     if(treept->data==targ)return treept;
     else{
         tpt result=find(treept->leftChild,targ);
         return result?result:find(treept->rightChild,targ);
     }
-}
+}*/
 void delete(tpt &treept,int targ){
 	pair<tpt,tpt>pairs;
 }
@@ -68,7 +68,7 @@ int main(){
                 vecc.push_back(stoi(str.substr(j,i-j+1)));
             }
 	}
-	for(int i=0;i<vecc.size();i++)delete(head,vecc[i],pairs);
+	for(int i=0;i<vecc.size();i++)delete(head,vecc[i]);
 	cout<<"Binary search tree (after):";
 	preorder(head);
 	cout<<endl;
