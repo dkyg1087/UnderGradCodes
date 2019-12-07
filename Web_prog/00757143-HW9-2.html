@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            font-family: Calibri;
+            font-size: 48px;
+        }
+        
+        caption {
+            color: navy;
+        }
+        
+        tbody tr {
+            height: 100px;
+        }
+        
+        td {
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        var turns = 0;
+        var board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var interval = null;
+        var k = 0
+        var number = 0
+        var a, b
+        var result
+        sequence = []
+
+        function start() {
+            document.getElementById("table").addEventListener("click", draw, false);
+        }
+
+        function draw(e) {
+            var x = e.target.parentElement.rowIndex
+            var y = e.target.cellIndex
+            var num = x * 3 + y
+            if (e.target.tagName.toLowerCase() == "td" && e.target.parentElement.rowIndex < 3) {
+                if (board[num] == 0) {
+                    if (turns % 2) {
+                        e.target.innerHTML = "O"
+                        board[num] = 1
+                        sequence[k++] = (x + " " + y + " " + "O")
+                    } else {
+                        e.target.innerHTML = "X"
+                        board[num] = -1
+                        sequence[k++] = (x + " " + y + " " + "X")
+                    }
+                    turns++
+                    window.setTimeout(check, 50)
+                }
+            }
+
+        }
+
+        function check() {
+            if (
+                board[0] + board[1] + board[2] == 3 ||
+                board[3] + board[4] + board[5] == 3 ||
+                board[6] + board[7] + board[8] == 3 ||
+                board[0] + board[3] + board[6] == 3 ||
+                board[1] + board[4] + board[7] == 3 ||
+                board[2] + board[5] + board[8] == 3 ||
+                board[0] + board[4] + board[8] == 3 ||
+                board[2] + board[4] + board[6] == 3) {
+                result = "O wins";
+                alert(result);
+                for (var m = 0; m < 10; m++) {
+                    board[m] = 1;
+                }
+                document.getElementById("replay").disabled = false;
+            } else if (
+                board[0] + board[1] + board[2] == -3 ||
+                board[3] + board[4] + board[5] == -3 ||
+                board[6] + board[7] + board[8] == -3 ||
+                board[0] + board[3] + board[6] == -3 ||
+                board[1] + board[4] + board[7] == -3 ||
+                board[2] + board[5] + board[8] == -3 ||
+                board[0] + board[4] + board[8] == -3 ||
+                board[2] + board[4] + board[6] == -3) {
+                result = "X wins";
+                alert(result);
+                for (var m = 0; m < 10; m++) {
+                    board[m] = 1;
+                }
+                document.getElementById("replay").disabled = false;
+            } else if (board[0] != 0 && board[1] != 0 && board[2] != 0 && board[3] != 0 && board[4] != 0 && board[5] != 0 && board[6] != 0 && board[7] != 0 && board[8] != 0) {
+                result = "Ties";
+                alert(result);
+                for (var m = 0; m < 10; m++) {
+                    board[m] = 1;
+                }
+                document.getElementById("replay").disabled = false;
+            }
+        }
+
+        function replay() {
+            number = 0;
+            var table = document.getElementById("table");
+            for (var i = 0, row; row = table.rows[i], i < 3; ++i) {
+                for (var j = 0, col; col = row.cells[j], j < 3; ++j) {
+                    col.innerHTML = "";
+                }
+            }
+            interval = setInterval(print, 500);
+
+        }
+
+        function print() {
+            if (number == k) {
+                window.clearInterval(interval);
+                interval = null;
+                alert(result);
+                return;
+            }
+            a = sequence[number].substring(0, 1);
+            b = sequence[number].substring(2, 3);
+
+            var table = document.getElementById("table");
+            var row = table.rows[a];
+            var col = row.cells[b];
+            col.innerHTML = sequence[number].substring(4, 5);
+            number++;
+
+        }
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+    <table id="table">
+        <caption>Tic-Tac-Toe</caption>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <input id="replay" type="button" value="Replay" disabled onclick="replay()">
+                    <input id="new" type="button" value="New Game" onclick="location.reload()">
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+</body>
+
+</html>

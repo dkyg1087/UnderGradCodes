@@ -1,0 +1,170 @@
+body {
+    font-family: "Noto sans tc";
+    margin: 0;
+    padding: 0;
+}
+
+.switch_ad {
+    color: white;
+    font-family: "Noto sans tc";
+    border-radius: 5px;
+    float: right;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: green;
+    outline: none;
+}
+
+.searchbt {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    left: 45px;
+    top: 3px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.searchbar {
+    height: 30px;
+    width: 200px;
+    border-radius: 30px;
+    position: relative;
+    top: -10px;
+    outline: none;
+    background-color: white;
+    padding-left: 40px;
+}
+
+.m-bar {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: 5px;
+}
+
+.m-bar1,
+.m-bar2,
+.m-bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.change .m-bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+}
+
+.change .m-bar2 {
+    opacity: 0;
+}
+
+.change .m-bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    color: white;
+    list-style: none;
+    padding: 10px;
+    float: left;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+li:hover {
+    color: rgb(170, 170, 170);
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(51, 51, 51);
+    padding-bottom: 65px;
+    padding-top: 10px;
+}
+
+.guide {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+
+.guide-con {
+    border-radius: 10px;
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    padding-bottom: 50px;
+    border: 1px solid #888;
+    width: 75%;
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+
+.got-it {
+    color: white;
+    font-family: "Noto sans tc";
+    border-radius: 5px;
+    float: right;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: green;
+    outline: none;
+}
+
+.got-it:hover {
+    background-color: rgb(96, 197, 96);
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0.4;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+@font-face {
+    font-family: "Noto sans tc";
+    src: url('stuff/NotoSansCJKtc-Black.otf')
+}

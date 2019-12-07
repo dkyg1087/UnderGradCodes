@@ -1,0 +1,70 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <script>
+        var article = ["the", "a", "one", "some", "any"];
+        var noun = ["boy", "girl", "dog", "cat", "car"];
+        var verb = ["drove", "jumped", "ran", "walked", "skipped"];
+        var preposition = ["to", "from", "over", "under", "on"];
+        var Upper = new Array(article.length);
+        for (let i = 0; i < article.length; i++) {
+            Upper[i] = article[i][0].toUpperCase() + article[i].substring(1);
+        }
+
+        function start() {
+            document.getElementById("bt").addEventListener("click", repeat, false);
+        }
+
+        function rdm() {
+            let t_div = "";
+            t_div += Upper[Math.floor(Math.random() * 5)] + " ";
+            t_div += noun[Math.floor(Math.random() * 5)] + " ";
+            t_div += verb[Math.floor(Math.random() * 5)] + " ";
+            t_div += preposition[Math.floor(Math.random() * 5)] + " ";
+            t_div += article[Math.floor(Math.random() * 5)] + " ";
+            t_div += noun[Math.floor(Math.random() * 5)] + ".";
+            return t_div;
+        }
+
+        function repeat() {
+            var num = parseInt(document.getElementById("input").value);
+            if (num <= 0 || isNaN(num)) {
+                alert("Not a valid number!");
+            } else {
+                var div = document.getElementById("dp");
+                div.innerHTML = "Once upon a time...<br><br>";
+                for (let i = 0; i < num; i++) {
+                    div.innerHTML += rdm();
+                    div.innerHTML += "<br><br>"
+                }
+                div.innerHTML += "THE END"
+            }
+        }
+        window.addEventListener("load", start, false);
+    </script>
+    <style>
+        body {
+            font-family: "Calibri";
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        div {
+            height: 400px;
+            width: 40%;
+            background-color: lemonchiffon;
+            overflow: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dp"></div>
+    <p># of sentences:<input type="text" id="input" value="10" size="1px"></p>
+    <input id="bt" type="button" value="Generate Short Story">
+</body>
+
+</html>

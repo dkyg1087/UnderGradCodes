@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HW</title>
+        <script>
+            var Choice;
+            var Picture;
+            var Flag=0;
+            var Line;
+            Choice=window.prompt("Please input the Pokemon you like (1=pikachu, 2=bulbasaur, 3=charmander, 4=squirtle, 5=random):","1" );
+            switch(Choice){
+                case "1":
+                    Picture="<img src='pikachu.png'>";
+                    break;
+                case "2":
+                    Picture="<img src='bulbasaur.png'>";
+                    break;
+                case "3":
+                    Picture="<img src='charmander.png'>";
+                    break;
+                case "4":
+                    Picture="<img src='squirtle.png'>";
+                    break;
+                case "5":
+                    break;
+                default:
+                    window.alert("Wrong input! Please press [F5] to reload the page!");
+                    Flag=1;
+                    break;
+            }
+            if(Flag===0){
+                Line=window.prompt( "Please input the side length (>=1 and <=10):","5");
+                if(Line>=1 && Line<=10){
+                    document.writeln("<table");
+                    if(Choice!='5'){
+                        for(var i=1;i<=Line;i++){
+                            document.writeln("<tr>");
+                            for(var j=1;j<=Line;j++){
+                                document.writeln("<td>"+Picture+"</td>");
+                            }
+                            document.writeln("</tr>");
+                        }
+                    }
+                    else {
+                        for(var i=1;i<=Line;i++){
+                            document.writeln("<tr>");
+                            for(var j=1;j<=Line;j++){
+                                Choice=Math.floor((Math.random()*4)+1);
+                                switch(Choice){
+                                    case 1:
+                                        Picture="<img src='pikachu.png'>";
+                                        break;
+                                    case 2:
+                                        Picture="<img src='bulbasaur.png'>";
+                                        break;
+                                    case 3:
+                                        Picture="<img src='charmander.png'>";
+                                        break;
+                                    case 4:
+                                        Picture="<img src='squirtle.png'>";
+                                    break;
+                                }
+                                document.writeln("<td>"+Picture+"</td>");
+                            }
+                            document.writeln("</tr>");
+                        }
+                    }
+                }
+                else{
+                    window.alert("Wrong input! Please press [F5] to reload the page!"); 
+                }
+            }
+        </script>
+    </head>
+    <body></body>
+</html>

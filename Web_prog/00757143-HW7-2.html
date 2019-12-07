@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style>
+        table,
+        th,
+        tr {
+            text-align: center;
+            background-color: navy;
+            color: white;
+            border: 1px solid black;
+            margin: 10px;
+            padding: 10px;
+            border-collapse: collapse;
+        }
+        
+        td {
+            text-align: center;
+            background-color: powderblue;
+            color: black;
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+        function start() {
+            document.getElementById("add").addEventListener("click", add_stuff, false);
+            document.getElementById("remove").addEventListener("click", remove_all, false);
+            loadSearch();
+        }
+
+        function add_stuff() {
+            var name = document.getElementById("name").value;
+            var url = document.getElementById("url").value;
+            if (name == "") {
+                window.alert("Please enter a bookmark name!");
+            } else if (url == "") {
+                window.alert("Please enter the bookmark url")
+            } else {
+                localStorage.setItem("ntou-" + name, url)
+                loadSearch();
+            }
+            document.getElementById("name").value = url = document.getElementById("url").value = "";
+        }
+
+        function remove_all() {
+            for (data in localStorage) {
+                if (data.startsWith('ntou-')) {
+                    localStorage.removeItem(data)
+                }
+            }
+            loadSearch();
+        }
+
+        function loadSearch() {
+            var table = "<table><tr><th width='100px'>標籤名稱</th><th width='400px'>標籤網址</th></tr>"
+            for (data in localStorage) {
+                if (data.startsWith('ntou-')) {
+                    table += "<tr><td>" + data.substring(5) + "</td><td><a href='" + localStorage.getItem(data) + "' target='_blank' >" + localStorage.getItem(data) + "</td></tr>"
+                }
+            }
+            table += "</table>"
+            document.getElementById("table").innerHTML = table
+        }
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+    <p> Bookmark Name:<input type="text" size="30" id="name"> Bookmark URL:<input type="text" size="30" id="url"></p>
+    <input type="button" id="add" value="Add New item"> <input type="button" id="remove" value="Remove all items">
+    <hr>
+    <div id="table"></div>
+</body>
+
+</html>

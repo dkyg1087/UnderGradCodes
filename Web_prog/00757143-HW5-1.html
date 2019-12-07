@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <script>
+        function start() {
+            var button = document.getElementById("dsbt");
+            var button2 = document.getElementById("dsbs");
+            button.addEventListener("click", display_t, false);
+            button2.addEventListener("click", display_s, false);
+        }
+
+        function display_s() {
+            side = document.getElementById("side").value;
+            if (side < 0 || side > 10) {
+                window.alert("You input a invalid value!");
+            } else {
+                var divobj = document.getElementById("dp");
+                divobj.innerHTML = "";
+                for (let i = 0; i < side; i++) {
+                    for (let j = 0; j < side; j++) {
+                        divobj.innerHTML += '<img src="baseball.jpg" length="50px" width="50px">';
+                    }
+                    divobj.innerHTML += "<br>";
+                }
+            }
+        }
+
+        function display_t() {
+            side = document.getElementById("side").value;
+            if (side < 0 || side > 10) {
+                window.alert("You input a invalid value!");
+            } else {
+                var divobj = document.getElementById("dp");
+                divobj.innerHTML = "";
+                for (let i = 0; i < side; ++i) {
+                    for (let j = 0; j < side; ++j) {
+                        if (i + j < side - 1) {
+                            divobj.innerHTML += '<img src="blank.png" length="50px" width="50px">';
+                        } else {
+                            divobj.innerHTML += '<img src="baseball.jpg" length="50px" width="50px">';
+                        }
+                    }
+                    divobj.innerHTML += "<br>";
+                }
+            }
+        }
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+    <p>
+        Side Length(&lt;=10):
+        <input id="side" type="text" value=5>
+        <input id="dsbt" type="button" value="Draw Baseball Triangle">
+        <input id="dsbs" type="button" value="Draw Baseball Square">
+    </p>
+    <hr>
+    <div id="dp"></div>
+</body>
+
+</html>

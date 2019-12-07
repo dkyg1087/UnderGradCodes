@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style>
+        #canvas {
+            width: 400px;
+            border: 1px solid #999999;
+            border-collapse: collapse
+        }
+        
+        td {
+            width: 4px;
+            height: 4px;
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        .blue {
+            background-color: blue;
+        }
+        
+        .red {
+            background-color: red;
+        }
+        
+        .black {
+            background-color: black;
+        }
+    </style>
+    <script>
+        function createCanvas() {
+            var side = 100;
+            var tbody = document.getElementById("tablebody");
+
+            for (var i = 0; i < side; ++i) {
+                var row = document.createElement("tr");
+
+                for (var j = 0; j < side; ++j) {
+                    var cell = document.createElement("td");
+                    if (localStorage.getItem(i + " " + j)) {
+                        cell.setAttribute("class", localStorage.getItem(i + " " + j))
+                    }
+                    row.appendChild(cell);
+                }
+
+                tbody.appendChild(row);
+            }
+            document.getElementById("canvas").addEventListener(
+                "mousemove", processMouseMove, false);
+            document.getElementById("bt").addEventListener("click", clear, false)
+        }
+
+        function clear() {
+            localStorage.clear()
+            location.reload();
+        }
+
+        function processMouseMove(e) {
+            if (e.target.tagName.toLowerCase() == "td") {
+                var x = e.target.parentNode.rowIndex
+                var y = e.target.cellIndex
+                if (e.ctrlKey) {
+                    e.target.setAttribute("class", "blue");
+                    localStorage.setItem(x + " " + y, "blue")
+                }
+
+                if (e.shiftKey) {
+                    e.target.setAttribute("class", "red");
+                    localStorage.setItem(x + " " + y, "red")
+                }
+                if (e.altKey) {
+                    e.target.setAttribute("class", "black")
+                    localStorage.setItem(x + " " + y, "black")
+                }
+                if (e.which == 1) {
+                    e.target.setAttribute("class", " ")
+                    localStorage.removeItem(x + " " + y)
+                }
+            }
+        }
+        window.addEventListener("load", createCanvas, false);
+    </script>
+</head>
+
+<body>
+    <table id="canvas">
+        <caption>Hold <em>Ctrl</em> to draw blue.<em>Shift</em> to draw red.<em>Alt</em> to draw black.<br>Press mouse to erase point.</caption>
+        <tbody id="tablebody"></tbody>
+    </table>
+    <input type="button" id="bt" value="Clear Canvas">
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style>
+        @import url(https://fonts.googleapis.com/earlyaccess/cwtexkai.css);
+        body {
+            text-align: center;
+            font-family: 'cwTeXKai', 'Perpetua', 'serif';
+        }
+        
+        h1 {
+            color: dimgray;
+        }
+        
+        .adj,
+        .Noun {
+            color: navy;
+        }
+        
+        .Verb {
+            color: firebrick;
+            font-size: 150%;
+        }
+    </style>
+    <script>
+        var adj = ["客戶那邊的", "我們的", "負責談需求的", "負責這個部分的", "直到上線前一天", "(雙手一攤)"]
+        var Noun = ["專案經理", "主管", "工程師", "設計師", "外包", "User", "聯絡窗口"]
+        var Verb = ["當初沒有講清楚", "一直換", "說他肚子不舒服", "擺爛不想做了", "突然開始放長假", "去生小孩了", "離職了", "都沒甚麼sense", "都沒有跟我講", "以為這些不用做", "一直在狀況外", "做事拖拖拉拉", "還搞不清楚狀況", "Quality有問題", "東西一直改", "在整我", "突然就沒來了"]
+        var Pic = ['<img src="Cat.jpg">', '<img src="Harry.jpg">', '<img src="Jacky.jpg">', '<img src="Yao.jpg">']
+        var index;
+
+        function start() {
+            var divv;
+            divv = " ";
+            index = Math.floor(Math.random() * 6);
+            divv += "<span class='adj'>" + adj[index] + "</span>";
+            index = Math.floor(Math.random() * 7);
+            divv += "<span class='Noun'>" + Noun[index] + "</span>";
+            index = Math.floor(Math.random() * 17);
+            divv += "<span class='Verb'>" + Verb[index] + "!" + "</span>";
+            divv += "<br>"
+            index = Math.floor(Math.random() * 4);
+            divv += Pic[index];
+            var a = document.getElementById("dp");
+            a.innerHTML = divv;
+        }
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+    <h1>專案失敗了，是因為...</h1>
+    <h1>
+        <div id="dp"></div>
+    </h1>
+</body>
+
+</html>

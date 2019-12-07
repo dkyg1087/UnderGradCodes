@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <script>
+        var str = "任意門 時光機 竹蜻蜓 時光布 記憶麵包 縮小燈 翻譯蒟蒻 如果電話亭 穿透環 更衣照相機"
+        var ary = str.split(" ")
+
+        function start() {
+            var interval = setInterval(rdm, 1000)
+        }
+
+        function rdm() {
+            var num = Math.floor(Math.random() * 10)
+            var act_num = num + 1;
+            document.getElementById("pic").setAttribute("src", "src/" + (act_num != 10 ? "0" + act_num : "10") + ".png")
+            document.getElementById("text").innerHTML = ary[num]
+        }
+        window.addEventListener("load", start, false);
+    </script>
+    <style>
+        img {
+            height: 30%;
+            width: 30%;
+        }
+        
+        div {
+            width: 30%;
+            font-family: "Helvetica", "Microsoft YaHei", "LiHei Pro", "TW-Kai";
+            font-size: 20px;
+            font-weight: bold;
+            color: navy;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="src/00.png" id="pic">
+    <div id="text">哆啦A夢</div>
+</body>
+
+</html>

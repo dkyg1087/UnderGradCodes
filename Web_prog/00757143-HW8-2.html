@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style>
+        div.nav {
+            border: 1px solid skyBlue;
+            margin-left: 3px;
+            padding: 3px;
+            float: left;
+        }
+        
+        input,
+        p,
+        li {
+            font-family: "Helvetica", "Microsoft YaHei", "LiHei Pro", "TW-Kai";
+        }
+        
+        li {
+            font-size: 12px;
+        }
+        
+        img.picture {
+            position: absolute;
+            cursor: move;
+        }
+    </style>
+    <script>
+        var imgnum = localStorage.getItem("ntou-num")
+        if (imgnum) {
+            imgnum = parseInt(imgnum)
+        } else {
+            imgnum = 3
+        }
+
+        function start() {
+            document.getElementById("addButton").addEventListener("click", add, false);
+            document.getElementById("removeAllButton").addEventListener("click", remove, false);
+            for (data in localStorage) {
+                if (data.startsWith('ntou-')) {
+                    if (data != 'ntou-num') {
+                        let ary = localStorage.getItem(data).split(" ")
+                        let newnode = document.createElement("img")
+                        newnode.setAttribute("src", "src/" + (ary[0] != 10 ? "0" + ary[0] : "10") + ".png")
+                        newnode.setAttribute("class", "picture")
+                        newnode.setAttribute("style", "top:" + ary[1] + "px; left:" + ary[2] + "px;z-index:" + data.substring(8))
+                        newnode.setAttribute("id", "img" + data.substring(8))
+                        document.body.appendChild(newnode)
+                    }
+                }
+            }
+        }
+
+        function add() {
+            var pic_num = parseInt(document.getElementById("pic").value)
+            var x_num = parseInt(document.getElementById("x").value)
+            var y_num = parseInt(document.getElementById("y").value)
+            if (pic_num > 10 || pic_num < 1 || x_num < 40 || x_num > 375 || y_num < 40 || y_num > 580) {
+                alert("Please enter valid numbers")
+            } else {
+                let newnode = document.createElement("img");
+                newnode.setAttribute("src", "src/" + (pic_num != 10 ? "0" + pic_num : "10") + ".png")
+                newnode.setAttribute("class", "picture")
+                newnode.setAttribute("style", "top:" + x_num + "px; left:" + y_num + "px;z-index:" + imgnum)
+                newnode.setAttribute("id", "img" + imgnum)
+                localStorage.setItem("ntou-num", imgnum)
+                document.body.appendChild(newnode)
+                localStorage.setItem("ntou-" + "img" + imgnum, pic_num + " " + x_num + " " + y_num)
+                imgnum++;
+            }
+        }
+
+        function remove() {
+            for (data in localStorage) {
+                if (data.startsWith('ntou-')) {
+                    localStorage.removeItem(data)
+                    if (data != 'ntou-num') {
+                        document.body.removeChild(document.getElementById(data.substring(5)))
+                    }
+                }
+            }
+        }
+        window.addEventListener("load", start, false)
+    </script>
+</head>
+
+<body>
+    <img src="src/blackboard.jpg" height="600px" width="800px" style="float:left; z-index:0;" />
+    <img id="img-0" class="picture" style="top: 50px; left: 50px; z-index:1;" src="src/00.png" />
+    <div id="nav" class="nav">
+        <form action="#">
+            <p>
+                <label>要放哪個道具圖片(請輸入編號):
+					<input type="number" id="pic" min="1" max="10" step="1" value="1" />
+				</label><br />
+                <label>圖片X座標:
+					<input type="number" id="x" min="40" max="375" step="1" value="40" />
+				</label><br />
+                <label>圖片Y座標:
+					<input type="number" id="y" min="40" max="580" step="1" value="100" />
+				</label>
+            </p>
+            <p>
+                <input type="button" value="新增圖片" id="addButton">
+                <input type="button" value="移除所有圖片" id="removeAllButton">
+            </p>
+        </form>
+        <ul>
+            <li>[01]任意門</li>
+            <li>[02]時光機</li>
+            <li>[03]竹蜻蜓</li>
+            <li>[04]時光布</li>
+            <li>[05]記憶麵包</li>
+            <li>[06]縮小燈</li>
+            <li>[07]翻譯蒟蒻</li>
+            <li>[08]如果電話亭</li>
+            <li>[09]穿透環</li>
+            <li>[10]更衣照相機</li>
+        </ul>
+    </div>
+</body>
+
+</html>

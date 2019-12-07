@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style>
+        img {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .text {
+            font-weight: bold;
+            color: navy;
+            position: relative;
+            left: 10px;
+            font-size: 160%;
+        }
+    </style>
+    <script>
+        var str = "任意門 時光機 竹蜻蜓 時光布 記憶麵包 縮小燈 翻譯蒟蒻 如果電話亭 穿透環 更衣照相機"
+        var ary = str.split(" ")
+        var pic = ["01.png", "02.png", "03.png", "04.png", "05.png", "06.png", "07.png", "08.png", "09.png", "10.png"]
+
+        function start() {
+            document.getElementById("bt").addEventListener("click", show, false);
+            document.getElementById("au").addEventListener("ended", rdm, false);
+        }
+
+        function show() {
+            document.getElementById("dpt").innerHTML = "";
+            document.getElementById("dpp").innerHTML = "<img src='blank.png'>"
+            document.getElementById("au").play();
+        }
+
+        function rdm() {
+            var num = Math.floor(Math.random() * 10)
+            document.getElementById("dpp").innerHTML = "<img src='" + pic[num] + "'>"
+            document.getElementById("dpt").innerHTML = "您抽到" + ary[num] + "!"
+        }
+        window.addEventListener("load", start, false)
+    </script>
+</head>
+
+<body>
+    <audio id="au" preload="auto" type="audio/mpeg">
+        <source src="doraemon.mp3">
+    </audio>
+    <div id="dpp">
+        <img src="00.png">
+    </div>
+    <input id="bt" type="button" value="抽道具" style="width:300px">
+    <div id="dpt" class="text">請按下button抽道具</div>
+</body>
+
+</html>

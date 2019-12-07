@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HW</title>
+    <style type="text/css">
+        p {
+            color: navy;
+            font-size: 120%;
+            font-family: Helvetica;
+        }
+    </style>
+    <script>
+        var a = new Array(7);
+
+        function start() {
+            var button = document.getElementById("rollButton");
+            var button2 = document.getElementById("Shortcut");
+            var button3 = document.getElementById("Shortcut2");
+            button.addEventListener("click", rollDice, false);
+            button2.addEventListener("click", shortcut, false);
+            button3.addEventListener("click", shortcut2, false);
+        }
+
+        function rollDice() {
+            for (var i = 1; i <= 6; i++) {
+                a[i] = 0;
+            }
+            var val;
+            for (var i = 1; i <= 4; i++) {
+                val = Math.floor(1 + Math.random() * 6);
+                a[val]++;
+                setImage(i, val);
+            }
+            show();
+        }
+
+        function shortcut() {
+            for (var i = 1; i <= 6; ++i) {
+                a[i] = 0;
+            }
+            var val;
+            val = Math.floor(1 + Math.random() * 6);
+            for (var i = 1; i <= 4; ++i) {
+                a[val]++;
+                setImage(i, val);
+            }
+            show();
+        }
+
+        function shortcut2() {
+            for (var i = 1; i <= 6; ++i) {
+                a[i] = 0;
+            }
+            var val;
+            var position = 999;
+            var temp = 999;
+            var b = new Array(5);
+            for (var i = 1; i <= 4; ++i) {
+                b[i] = 0;
+            }
+
+            for (var i = 1; i <= 2; ++i) {
+                while (temp == position) {
+                    position = Math.floor(1 + Math.random() * 4);
+                }
+                temp = position;
+                a[6]++;
+                b[position]++;
+                setImage(position, 6);
+            }
+            val = Math.floor(1 + Math.random() * 5);
+            for (var i = 1; i <= 4; ++i) {
+                if (b[i] != 1) {
+                    a[val]++;
+                    setImage(i, val);
+                }
+            }
+            show();
+        }
+
+        function setImage(dieNumber, val) {
+            var dieImg = document.getElementById("die" + dieNumber);
+            dieImg.setAttribute("src", "die" + val + ".png");
+            dieImg.setAttribute("alt", "die with " + val + " spot(s)");
+        }
+
+        function show() {
+            var divobj = document.getElementById("dp");
+            divobj.innerHTML = "";
+            var sum = 0;
+            for (var i = 1; i <= 6; i++) {
+                if (a[i] == 2) {
+                    for (var j = 1; j <= 6; j++) {
+                        if (j != i && a[j] > 0) {
+                            sum += j * a[j];
+                        }
+                    }
+                    if (sum == 12) {
+                        divobj.innerHTML += '<p>Congratulations! Your roll is "十八"!</p>';
+                        divobj.innerHTML += "<img src='congrats.jpg'>";
+                        divobj.innerHTML += "<p>Your score is " + sum + "</p>";
+                    } else {
+                        divobj.innerHTML += "<p>Your score is " + sum + "</p>";
+                    }
+                    break;
+                } else if (a[i] == 3) {
+                    divobj.innerHTML += '<p>No decision ,please re-roll the dice</p>';
+                    break;
+                } else if (a[i] == 4) {
+                    divobj.innerHTML += '<p>Congratulations! Your roll is "一色"!</p>';
+                    if (i == 6) {
+                        divobj.innerHTML += "<img src='congrats.jpg'>";
+                    } else {
+                        divobj.innerHTML += "<img src='congrats.jpg'>";
+                    }
+
+                    break;
+                } else if (i == 6) {
+                    divobj.innerHTML += '<p>Oops! Your roll is "無面"</p>';
+                    divobj.innerHTML += "<img src='oops.jpg'>";
+                }
+            }
+
+        }
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body>
+    <input id="rollButton" type="button" value="Roll Dice">
+    <input id="Shortcut" type="button" value="Shortcut">
+    <input id="Shortcut2" type="button" value="Shortcut2">
+    <p> <img id="die1" src="blank.png" alt="die 1 image">
+        <img id="die2" src="blank.png" alt="die 2 image">
+        <img id="die3" src="blank.png" alt="die 3 image">
+        <img id="die4" src="blank.png" alt="die 4 image">
+    </p>
+    <div id="dp"></div>
+</body>
+
+</html>

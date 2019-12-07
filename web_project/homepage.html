@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>請愛用ADB</title>
+    <link rel="stylesheet" type="text/css" href="homepage_style.css">
+    <link rel="icon" type="image/png" href="">
+    <script src="homepage_script.js"></script>
+</head>
+
+<body>
+    <div id="guide" class="guide">
+        <div class="guide-con">
+            <p>到底有沒有改</p>
+            <button id="got-it" class="got-it">我知道了!</button>
+        </div>
+    </div>
+    <div id="toptaskbar" class="topclassbar">
+        <h1>
+            <nav>
+                <ul>
+                    <li>
+                        <img src="stuff/images/pikachu.png" style="width:40 px;height:40px;" class="clickable">
+                    </li>
+                    <li> </li>
+                    <li>
+
+                        <div id="m-bar" class="m-bar" onclick="change(this)">
+                            <div class="m-bar1"></div>
+                            <div class="m-bar2"></div>
+                            <div class="m-bar3"></div>
+                        </div>
+                    </li>
+                    <li> </li>
+                    <li class="clickable" onclick="guide()">Guide</li>
+                    <li> </li>
+                    <li class="clickable" onclick="developers()">Developers</li>
+                    <li> </li>
+                    <li class="clickable" onclick="credits()">Credits</li>
+                    <li> </li>
+                    <li>
+                        <img src="stuff/images/search_icon2.png" class="searchbt" id="searchbt" onclick="search()">
+                        <input type="text" id="search" class="searchbar">
+                    </li>
+                    <li> </li>
+                    <li><button class="switch_ad" id="switch_ad" onclick="switch_ad()">Block me some ad</button></li>
+                </ul>
+            </nav>
+        </h1>
+    </div>
+</body>
+
+</html>

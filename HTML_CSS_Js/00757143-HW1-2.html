@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Web Form Test</title>
+</head>
+
+<body>
+    <form method="get" action="http://140.121.150.92/show-form.jsp">
+        <p>
+            <label>Your name:
+                <input name="fullname" type="text" autofocus size="40"><br>
+            </label>
+        </p>
+        <p>
+            <label>Your email:
+                <input name="email" type="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 3}$">
+                (name@domain.com)<br>
+            </label>
+        </p>
+        <p>
+            <label>Your homepage's URL:
+                <input name="url" type="url" required pattern="https?://.+" >
+                (http://www.domainname.com)<br>
+            </label>
+        </p>
+        <p>
+            <label>Your birthday date:
+                <input name="date" type="datetime">
+                (yyyy-mm-dd)<br>
+            </label>
+        </p>
+        <p>
+            <label>Your favorite color:
+                <input name="color" type="color"><br>
+            </label>
+        </p>
+        <p>
+            <label><I>Check off all the characteristic that you enjoyed about college.</I><br>
+                <input name="likes" type="checkbox" value="Campus">Campus
+            </label>
+            <label>
+                <input name="likes" type="checkbox" value="Location">Location
+            </label>
+            <label>
+                <input name="likes" type="checkbox" value="Student">Student
+            </label>
+        </p>
+        <p>
+            <label><I>How did you become interested in our college:</I><br>
+                <input name="interest" type="radio" value="Friends">Friends
+            </label>
+            <label>
+                <input name="interest" type="radio" value="Television">Television
+            </label>
+            <label>
+                <input name="interest" type="radio" value="Internet">Internet
+            </label>
+        </p>
+        <p>
+            <input name="submit" type="submit">
+            <input name="clear" type="reset">
+        </p>
+    </form>
+</body>
+
+</html>

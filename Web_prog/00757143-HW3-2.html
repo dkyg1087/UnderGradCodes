@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HW</title>
+        <style>
+            span.age{
+                color:navy;
+                text-decoration: underline;
+            }
+            span.name{
+                color:firebrick;
+                font-weight: bold;
+            }
+            *{
+                font-family:helvetica; 
+            }
+        </style>
+        <script>
+            var name;
+            var age;
+            name=window.prompt("Please input your name.","Guest");
+            age=window.prompt("Please input your age.","1");
+            agee=parseInt(age);
+            document.writeln("<h1>Hello,");
+            if (agee>1){
+                document.writeln("<span class='name'>"+name+"</span>!<br>");
+                console.log("Hello,"+name+"!");
+                document.writeln("You are <span class='age'>"+age+"</span>"+" years old!</h1>");
+                console.log("\nYou are "+age+" years old!");
+            }
+            else if(agee==1){
+                document.writeln("<span class='name'>Kid</span>!<br>You are ");
+                console.log("Hello,Kid!\n");
+                document.writeln('<span class="age">one</span> year old!</h1>');
+                console.log("You are one year old!");
+            }
+            else {
+                alert("Your input is incorrect");
+                console.log("Hello,"+name+"!");
+                console.log("Your input is incorrect");
+                document.writeln("<span class='name'>"+name+"</span>!<br>");
+                document.writeln("Your age is a mystery!");
+            }
+        </script>
+    </head>
+    <body></body>
+</html>
