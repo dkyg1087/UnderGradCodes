@@ -7,16 +7,26 @@ struct Tree {
     int data;
     tpt leftChild=NULL, rightChild=NULL;
 };
-/*pair<tpt,tpt> find(tpt treept,int targ){
-    if(treept==NULL)return NULL;
-    if(treept->data==targ)return treept;
+pair<tpt,tpt> find(tpt treept,int targ,tpt parent){
+    if(treept==NULL)return make_pair(treept,parent);
+    if(treept->data==targ)return make_pair(treept,parent);
     else{
-        tpt result=find(treept->leftChild,targ);
-        return result?result:find(treept->rightChild,targ);
+        pair<tpt,tpt>result=find(treept->leftChild,targ,treept);
+        return result.first?result:find(treept->rightChild,targ,treept);
     }
-}*/
-void delete(tpt &treept,int targ){
-	pair<tpt,tpt>pairs;
+}
+int travel(tpt treept){
+	
+}
+void _delete(tpt &treept,int targ){
+	pair<tpt,tpt>family=find(treept,targ,NULL);
+	if(family.first){
+		cout<<"no "<<targ<<endl;
+		return;
+	}
+	else{
+		char pos=!family.second?'H':family.second->leftChild->data==family.first->data?'L':'R';
+	} 
 }
 void insert(tpt &treept,int num){
 	if(treept==NULL){
@@ -68,7 +78,7 @@ int main(){
                 vecc.push_back(stoi(str.substr(j,i-j+1)));
             }
 	}
-	for(int i=0;i<vecc.size();i++)delete(head,vecc[i]);
+	for(int i=0;i<vecc.size();i++)_delete(head,vecc[i]);
 	cout<<"Binary search tree (after):";
 	preorder(head);
 	cout<<endl;
