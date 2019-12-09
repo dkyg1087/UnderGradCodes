@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "-g", "${workspaceFolder}/${relativeFileDirname}/${fileBasename}", "-o", "${fileBasenameNoExtension}"
+                "-g", "${fileBasename}", "-o", "${fileBasenameNoExtension}"
             ],
             "group": {
                 "kind": "build",
