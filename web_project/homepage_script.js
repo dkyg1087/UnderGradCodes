@@ -1,9 +1,13 @@
 var on_off = 0
 
 function guide() {
-    document.getElementById("guide").style.display = "block";
-    document.getElementById("got-it").onclick = function() {
-        close("guide")
+    if (!localStorage.getItem("guide_vist")) {
+        document.getElementById("guide").style.display = "block";
+        document.getElementById("got-it").onclick = function() {
+            close("guide")
+        }
+    } else {
+        localStorage.setItem("guide_vist", "Y");
     }
 }
 
@@ -35,11 +39,6 @@ function change(x) {
 }
 
 function start() {
-    var arr = new Array();
-    var a = 2
-    a == 0 ? 0 : a--;
-    if (!arr[3]) arr[3] = "Here"
-    alert(arr[2])
-    alert(arr[3])
+    guide()
 }
 window.addEventListener("load", start, false);
