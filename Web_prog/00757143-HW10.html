@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>15-Puzzle</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+        
+        td,
+        caption {
+            font-weight: bold;
+            font-family: helvetica, arial, sans-serif;
+            cursor: pointer;
+        }
+        
+        caption {
+            font-size: 3em;
+            color: gray;
+        }
+        
+        td {
+            font-size: 4em;
+            color: blue;
+            border: 2px solid gray;
+            padding: 5px;
+        }
+        
+        div {
+            font-size: 2em;
+            color: red;
+        }
+        
+        button {
+            width: 80px;
+            height: 50px;
+        }
+    </style>
+    <script type="text/javascript">
+        function shuffle(a) {
+            let j, x, i;
+            for (i = a.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = a[i];
+                a[i] = a[j];
+                a[j] = x;
+            }
+            return a;
+        }
+
+        function setup() {
+            restart();
+            $("td").mouseenter(function() {
+                switch (is_ava($(this).attr('id'))) {
+                    case "U":
+                        $("#msg").html("This tile can move up!")
+                        break
+                    case "D":
+                        $("#msg").html("This tile can move down!")
+                        break
+                    case "L":
+                        $("#msg").html("This tile can move left!")
+                        break
+                    case "R":
+                        $("#msg").html("This tile can move right!")
+                        break
+                    case "N":
+                        $("#msg").html("Illegal move!")
+                        break
+                    case "B":
+                        $("#msg").html("This is a blank cell!")
+                        break
+                    default:
+                        break
+                }
+            })
+        }
+
+        function doClick(x, y) {
+            let dir = is_ava("cell" + x + y)
+            switch (dir) {
+                case "U":
+                    $("#cell" + (x - 1) + y).html($("#cell" + x + y).html())
+                    $("#cell" + x + y).html(" ")
+                    break
+                case "D":
+                    $("#cell" + (x + 1) + y).html($("#cell" + x + y).html())
+                    $("#cell" + x + y).html(" ")
+                    break
+                case "L":
+                    $("#cell" + x + (y - 1)).html($("#cell" + x + y).html())
+                    $("#cell" + x + y).html(" ")
+                    break
+                case "R":
+                    $("#cell" + x + (y + 1)).html($("#cell" + x + y).html())
+                    $("#cell" + x + y).html(" ")
+                    break
+                default:
+                    break
+            }
+            setTimeout(function() {
+                checkWin()
+            }, 500)
+        }
+
+        function checkWin() {
+            let number = 1,
+                flag = 0;
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    if (parseInt($("#cell" + i + j).html()) == number) {
+                        number += 1;
+                    } else if (number == 16) {
+                        alert("Congratulations You WIN!")
+                        let text = prompt("Do you wnat to start again?\(Yes or No\)")
+                        if (text == "Yes" || text == "yes") restart()
+                        else {
+                            alert("Good bye!")
+                            close();
+                        }
+                    }
+                    if (flag == 1) break;
+                }
+            }
+        }
+
+        function gotoLastStep() {
+            let num = 1
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    if (num < 10) {
+                        $("#cell" + i + j).html("0" + num)
+                    } else if (num == 15) {
+                        $("#cell" + i + j).html(" ")
+                        $("#cell33").html(15)
+                        break;
+                    } else {
+                        $("#cell" + i + j).html(num)
+                    }
+                    num = num + 1;
+                }
+            }
+        }
+
+        function is_ava(id) {
+            if ($('#' + id).html() == " ") {
+                return "B"
+            } else {
+                let num = parseInt(id.substring(4))
+                if ($('#cell' + ((num - 10) < 4 ? "0" + (num - 10) : (num - 10))).html() == " ") return "U";
+                else if ($('#cell' + ((num + 10) < 4 ? "0" + (num + 10) : (num + 10))).html() == " ") return "D";
+                else if ($('#cell' + ((num - 1) < 4 ? "0" + (num - 1) : (num - 1))).html() == " ") return "L";
+                else if ($('#cell' + ((num + 1) < 4 ? "0" + (num + 1) : (num + 1))).html() == " ") return "R";
+            }
+            return "N"
+        }
+
+        function restart() {
+            var arr = [" ", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"]
+            let num = 0
+            arr = shuffle(arr);
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    $("#cell" + i + j).html(arr[num])
+                    num = num + 1
+                }
+            }
+        }
+
+        function switchBGM() {
+            var
+        }
+    </script>
+</head>
+
+<body onload="setup()">
+    <table id="board">
+        <caption>15-Puzzle</caption>
+        <tbody>
+            <tr>
+                <td onclick="doClick( 0, 0 )" id="cell00"> </td>
+                <td onclick="doClick( 0, 1 )" id="cell01">15</td>
+                <td onclick="doClick( 0, 2 )" id="cell02">14</td>
+                <td onclick="doClick( 0, 3 )" id="cell03">13</td>
+            </tr>
+            <tr>
+                <td onclick="doClick( 1, 0 )" id="cell10">12</td>
+                <td onclick="doClick( 1, 1 )" id="cell11">11</td>
+                <td onclick="doClick( 1, 2 )" id="cell12">10</td>
+                <td onclick="doClick( 1, 3 )" id="cell13">09</td>
+            </tr>
+            <tr>
+                <td onclick="doClick( 2, 0 )" id="cell20">08</td>
+                <td onclick="doClick( 2, 1 )" id="cell21">07</td>
+                <td onclick="doClick( 2, 2 )" id="cell22">06</td>
+                <td onclick="doClick( 2, 3 )" id="cell23">05</td>
+            </tr>
+            <tr>
+                <td onclick="doClick( 3, 0 )" id="cell30">04</td>
+                <td onclick="doClick( 3, 1 )" id="cell31">03</td>
+                <td onclick="doClick( 3, 2 )" id="cell32">02</td>
+                <td onclick="doClick( 3, 3 )" id="cell33">01</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        <button onclick="restart()" id="restartBtn">Restart Game</button>
+        <button onclick="gotoLastStep()" id="laststepBtn">Go to the Last Step</button>
+        <button onclick="importData()" id="importBtn">Import Data</button>
+        <button onclick="switchBGM()" id="bgmBtn">Switch BGM</button>
+    </p>
+    <div id="msg"></div>
+</body>
+
+</html>
