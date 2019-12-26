@@ -4,6 +4,7 @@ var progress = 0
 var inpt = "";
 var inpt_prog = 0;
 var flag = true;
+var time = 0;
 
 function check_n_run() {
     // var fin = false;
@@ -17,6 +18,18 @@ function check_n_run() {
     //     }
     // }, 5000)
     fin = run();
+}
+
+function show() {
+    // $.wait = function(ms) {
+    //     var defer = $.Deferred();
+    //     setTimeout(function() { defer.resolve(); }, ms);
+    //     return defer;
+    // };
+    // $.wait(300).then(function() {
+    //         document.getElementById("thetable").rows[1].cells[p].innerHTML = arr[p]
+    //     })
+    //     //document.getElementById("thetable").rows[1].cells[p].innerHTML = arr[p]
 }
 
 function run() {
@@ -34,24 +47,31 @@ function run() {
         switch (str[progress]) {
             case '+':
                 add();
+                show();
                 break;
             case '-':
                 minus();
+                show();
                 break;
             case '>':
                 shiftright();
+                show();
                 break;
             case '<':
                 shiftleft();
+                show();
                 break;
             case ',':
                 input();
+                show();
                 break;
             case '.':
                 output();
+                show();
                 break;
             case '[':
                 loop();
+                show();
                 break;
             default:
                 break;

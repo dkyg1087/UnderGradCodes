@@ -1,4 +1,56 @@
 body {
-    padding-top: 0;
-    margin-top: 0;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    font-family: "Noto sans tc";
+}
+
+.top_nav_bar {
+    background-color: white;
+    display: table;
+    width: 100%;
+    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.38);
+}
+
+nav div {
+    display: table-cell;
+    color: white;
+    padding: 5px;
+    padding-bottom: 0;
+}
+
+.searchbt {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    left: 45px;
+    top: -7px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.searchbar {
+    height: 30px;
+    width: 200px;
+    border-radius: 30px;
+    position: relative;
+    top: -20px;
+    outline: none;
+    background-color: white;
+    padding-left: 40px;
+}
+
+.text_link {
+    font-size: 30px;
+    color: black
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+@font-face {
+    font-family: "Noto sans tc";
+    src: url('stuff/NotoSansCJKtc-Black.otf')
 }

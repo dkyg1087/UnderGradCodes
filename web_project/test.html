@@ -7,20 +7,77 @@
             font-family: "Noto sans tc";
         }
         
+        table,
+        tr,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 2px;
+        }
+        
+        .test {
+            position: fixed;
+            top: 400px;
+            left: -200px;
+        }
+        
         @font-face {
             font-family: "Noto sans tc";
             src: url('stuff/NotoSansCJKtc-Black.otf')
         }
     </style>
-    <script src="test_script.js"></script>
+    <script src="intepreter.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
     <p>code:</p>
-    <textarea id="code_block"></textarea>
-    <button onclick="check_n_run()">Run</button>
+    <textarea id="code_block" wrap="off"></textarea>
+    <button onclick="begin()">Run</button>
+    <button onclick="play()">Play</button>
+    <p>
+        <table class="hey" width="100%" id="thetable">
+            <tr>
+                <td>cell#1</td>
+                <td>cell#2</td>
+                <td>cell#3</td>
+                <td>cell#4</td>
+                <td>cell#5</td>
+                <td>cell#6</td>
+                <td>cell#7</td>
+                <td>cell#8</td>
+                <td>cell#9</td>
+                <td>cell#10</td>
+                <td>cell#11</td>
+                <td>cell#12</td>
+                <td>cell#13</td>
+                <td>cell#14</td>
+                <td>cell#15</td>
+            </tr>
+            <tr>
+
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+
+
+        </table>
+    </p>
     <p>input:</p>
-    <textarea id="input_box"></textarea>
+    <textarea id="input_box" wrap="off"></textarea>
     <p>output:</p>
     <div id="output"></div>
     <p>++++++++ Set Cell #0 to 8<br> [
@@ -35,6 +92,8 @@
                     <-. Subtract 1 from Cell #4 for 87 to give a 'W'<br>
                         <. Cell #3 was set to 'o' from the end of 'Hello'<br>
                             +++.------.--------. Cell #3 for 'rl' and 'd'<br> >>+. Add 1 to Cell #5 gives us an exclamation point<br> >++. And finally a newline from Cell #6<br></p>
+
+
     <p>+[-[
         <<[+[--->]-[
             <<<]]]>>>-]>-.---.>..>.
