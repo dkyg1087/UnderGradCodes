@@ -6,35 +6,151 @@
     <title>Welcome to brainfuck</title>
     <link rel="icon" type="image/png" href="stuff/images/pic_re.png">
     <link rel="stylesheet" type="text/css" href="real.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
     <script src="real.js"></script>
+    <script src="intepreter.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
+    <div id="guide" class="guide">
+        <div class="guide-con">
+            <p>dsadsa</p>
+            <button id="got-it" class="got-it">I got it!</button>
+        </div>
+    </div>
     <div class="top_nav_bar">
         <nav>
-            <div>
-                <img src="stuff/images/pic.png" width="50px">
+            <div class="nav_item">
+                <a href="index.html"><img src="stuff/images/pic.png" width="50px" style="position: relative; top:3px;"></a>
             </div>
-            <div class="text_link" style="position: relative; top:-10px">
-                <p>Credits</p>
+            <div class="text_link nav_item" style="position: relative; top:-10px">
+                <a href="credits.html">Credits</a>
             </div>
-            <div class="text_link" style="position: relative; top:-10px">
-                <p>Developers</p>
+            <div class="text_link nav_item" style="position: relative; top:-10px">
+                <a href="developers.html">Developers</a>
             </div>
-            <div class="text_link" style="position: relative; top:-10px">
-                <p>Guides</p>
+            <div class="text_link nav_item" style="position: relative; top:-10px">
+                <p onclick="guide()">Guides</p>
             </div>
-            <div class="text_link" style="position: relative; top:-10px">
-                <p>Links</p>
+            <div class="text_link nav_item" style="position: relative; top:-10px">
+                <a href="links.html">Links</a>
             </div>
-            <div class="text_link" style="position: relative; top:-10px">
-                <p>Tutorials</p>
+            <div class="text_link nav_item" style="position: relative; top:-10px">
+                <a href="tutorials.html">Tutorials</a>
             </div>
-            <div>
-                <img src="stuff/images/search_icon2.png" class="searchbt" id="searchbt" onclick="search()">
-                <input type="text" id="search" class="searchbar">
+            <div class="text_link nav_item" style="position: relative; top:-10px">
+                <a href="about.html">About</a>
+            </div>
+            <div class="nav_item">
+                <form action="https://www.google.com/search" class="searchform" methozzzzzzzzzzzzd="get" name="searchform" target="_blank">
+                    <div class="nav_item">
+                        <input autocomplete="on" id="search" class="form-control search searchbar" name="q" placeholder="Search your stuff on Google" required="required" type="text">
+                    </div>
+                    <div class="nav_item"><input type="image" name="submit" src="stuff/images/search_icon2.png" alt="Submit" class="searchbt" id="searchbt"></div>
+                </form>
+            </div>
+            <div class="nav_item">
+                <a href="https://github.com/dkyg1087/welcome_to_Brainfuck" target="_blank"><img src="stuff/images/GitHub-Mark-120px-plus.png" width="50px" height="50px"></a>
             </div>
         </nav>
+    </div>
+    <div class="outer-con" style="width:200px; height:530px; float:left; ">
+        Text to ASCII converter
+        <hr> Enter character:<br>
+        <textarea id="Ascii" style="height:50px;" wrap="off"></textarea> result:
+        <br><textarea style="height:50px;" readonly id="ascii_out"></textarea> <br><br>
+        <hr><br><button onclick="begin()" class="runbt" id="rbt">Run code</button>
+        <button onclick="play()" class="runbt" id="plbt">Play</button><br><br>
+        <button onclick="playpause()" class="runbt" id="ppbt">Pause/Resume</button>
+        <button onclick="stop()" class="runbt" id="stbt">Stop</button><br>
+        <button onclick="faster()" class="runbt" id="fabt">Faster</button>
+        <button onclick="slower()" class="runbt" id="slbt">Slower</button>
+        <div id="interval">Current interval: 20 ms
+        </div>
+        <hr>
+        <div>PowerPoint:<br><a download href="#">Click here</a></div>
+    </div>
+    <div class="outer-con" style="float:left;">Code:<br><textarea class="linked" id="num" style="width:30px; height:300px; border-right: none;" readonly>1.</textarea><textarea class="linked" id="code_block" wrap="off" style="width:600px; height:300px;"></textarea></div>
+    <div class="outer-con" style="float:left; height:330px;">Input:<br><textarea id="input_box" style="width:300px; height:130px;"></textarea><br>Output:<br><textarea id="output" style="width:300px; height:140px;" readonly></textarea></div>
+    <div class="outer-con" style="float:left; width:1010px; height:190px;">
+        <div id="c_cmd">Current command:</div>
+        <table class="celltable" id="celltable">
+            <tr>
+                <td class="currently_on">cell#1</td>
+                <td>cell#2</td>
+                <td>cell#3</td>
+                <td>cell#4</td>
+                <td>cell#5</td>
+                <td>cell#6</td>
+                <td>cell#7</td>
+                <td>cell#8</td>
+                <td>cell#9</td>
+                <td>cell#10</td>
+            </tr>
+            <tr>
+                <td class="currently_on">0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>cell#11</td>
+                <td>cell#12</td>
+                <td>cell#13</td>
+                <td>cell#14</td>
+                <td>cell#15</td>
+                <td>cell#16</td>
+                <td>cell#17</td>
+                <td>cell#18</td>
+                <td>cell#19</td>
+                <td>cell#20</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>cell#21</td>
+                <td>cell#22</td>
+                <td>cell#23</td>
+                <td>cell#24</td>
+                <td>cell#25</td>
+                <td>cell#26</td>
+                <td>cell#27</td>
+                <td>cell#28</td>
+                <td>cell#29</td>
+                <td>cell#30</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>
+        <p>Hight-lighted cell means that ptr is on that cell. Click on the cell to change it to normal text.</p>
+    </div>
 </body>
 
 </html>

@@ -3,14 +3,15 @@ var mem_cell = []
 var bck_trck = []
 var inpt = "";
 var inpt_prg = 0;
-var time = 0;
+var time = 20;
 var inter;
 var progress;
 var RegEx = /([+[>,.\]<-])+/g
-var flag = true;
+var flag = false;
+var c_num;
 
 function start_run() {
-    document.getElementById("output").innerHTML = ""
+    document.getElementById("output").value = ""
     inpt = document.getElementById("input_box").value;
     if (!inpt) inpt = "";
     inpt_prog = 0;
@@ -23,11 +24,51 @@ function start_run() {
     for (let i = 0; i < tempstr.length; i++) {
         str += tempstr[i]
     }
+}
 
+function playpause() {
+    if (flag) {
+        flag = false;
+        clearInterval(inter)
+    } else {
+        flag = true;
+        setInterval(proc, time)
+    }
+}
+
+function slower() {
+    if (time <= 10000) time += 10;
+    if (flag == true) {
+        clearInterval(inter);
+        inter = setInterval(proc, time);
+    }
+    document.getElementById("interval").innerHTML = "Current interval: " + time + " ms"
+}
+
+function faster() {
+    if (time > 20) time -= 10;
+    if (flag == true) {
+        clearInterval(inter);
+        inter = setInterval(proc, time);
+    }
+    document.getElementById("interval").innerHTML = "Current interval: " + time + " ms"
+}
+
+function stop() {
+    document.getElementById("ppbt").disabled = true;
+    clearInterval(inter);
+    flag = false;
 }
 
 function begin() {
+    document.getElementById("ppbt").disabled = true;
+    document.getElementById("stbt").disabled = true;
     start_run();
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 3; j++) {
+            document.getElementById("celltable").rows[1 + j * 2].cells[i].innerHTML = 0;
+        }
+    }
     for (; flag;) {
         proc();
     }
@@ -35,7 +76,14 @@ function begin() {
 
 function play() {
     start_run();
-    inter = setInterval(proc, 0);
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 3; j++) {
+            document.getElementById("celltable").rows[1 + j * 2].cells[i].innerHTML = 0;
+        }
+    }
+    document.getElementById("ppbt").disabled = false;
+    document.getElementById("stbt").disabled = false;
+    inter = setInterval(proc, time);
 }
 
 function proc() {
@@ -44,44 +92,37 @@ function proc() {
         flag = false;
         return;
     }
+    document.getElementById("c_cmd").innerHTML = "Current command: " + str[progress];
     switch (str[progress]) {
         case '+':
             add();
-            if (document.getElementById("thetable").rows[1].cells[ptr]) {
-                document.getElementById("thetable").rows[1].cells[ptr].innerHTML = mem_cell[ptr]
-            } //alert(ptr)
+            c_num = parseInt(parseInt(ptr / 10) / 3);
+            document.getElementById("celltable").rows[1 + (2 * c_num)].cells[ptr % 10].innerHTML = mem_cell[ptr]
             break;
         case '-':
             minus();
-            if (document.getElementById("thetable").rows[1].cells[ptr]) {
-                document.getElementById("thetable").rows[1].cells[ptr].innerHTML = mem_cell[ptr]
-            } //alert(ptr)
+            c_num = parseInt(parseInt(ptr / 10) / 3);
+            document.getElementById("celltable").rows[1 + (2 * c_num)].cells[ptr % 10].innerHTML = mem_cell[ptr]
             break;
         case '>':
             shiftright();
-            //alert(ptr)
             break;
         case '<':
             shiftleft();
-            //alert(ptr)
             break;
         case ',':
             input();
-            if (document.getElementById("thetable").rows[1].cells[ptr]) {
-                document.getElementById("thetable").rows[1].cells[ptr].innerHTML = mem_cell[ptr]
-            } //alert(ptr)
+            c_num = parseInt(parseInt(ptr / 10) / 3);
+            document.getElementById("celltable").rows[1 + (2 * c_num)].cells[ptr % 10].innerHTML = mem_cell[ptr]
             break;
         case '.':
             output();
-            //alert(ptr)
             break;
         case '[':
             start_loop();
-            //alert(ptr)
             break;
         case ']':
             end_loop();
-            //alert(ptr)
             break;
         default:
             break;
@@ -102,7 +143,11 @@ function minus() {
 }
 
 function shiftright() {
+    $('.currently_on').attr('class', '');
     ptr++;
+    c_num = parseInt(parseInt(ptr / 10) / 3);
+    document.getElementById("celltable").rows[(2 * c_num)].cells[ptr % 10].setAttribute("class", "currently_on")
+    document.getElementById("celltable").rows[1 + (2 * c_num)].cells[ptr % 10].setAttribute("class", "currently_on")
 }
 
 function shiftleft() {
@@ -110,7 +155,11 @@ function shiftleft() {
         //alert("Your pointer is going crazy");
         ptr = 0;
     } else {
+        $('.currently_on').attr('class', '');
         ptr--;
+        c_num = parseInt(parseInt(ptr / 10) / 3);
+        document.getElementById("celltable").rows[(2 * c_num)].cells[ptr % 10].setAttribute("class", "currently_on")
+        document.getElementById("celltable").rows[1 + (2 * c_num)].cells[ptr % 10].setAttribute("class", "currently_on")
     }
 }
 
@@ -125,7 +174,7 @@ function input() {
 }
 
 function output() {
-    document.getElementById("output").innerHTML += String.fromCharCode(mem_cell[ptr])
+    document.getElementById("output").value += String.fromCharCode(mem_cell[ptr])
 }
 
 function start_loop() {

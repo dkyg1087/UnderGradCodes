@@ -1,0 +1,33 @@
+    ._headline {
+        font-family: "Noto sans tc";
+        color: #AB46AA;
+        font-size: 50px;
+    }
+    
+    ._img {
+        position: relative;
+        top: 10px;
+        float: right;
+        width: 400px;
+        display: table-cell;
+    }
+    
+    #wrapper {
+        position: relative;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .outer-con {
+        margin: 5px;
+        border-left: 2px solid #AB46AA;
+    }
+    
+    .article {
+        line-height: 2;
+    }
+    
+    .ook {
+        position: relative;
+        left: 25%;
+    }

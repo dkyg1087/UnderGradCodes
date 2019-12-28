@@ -12,9 +12,9 @@ body {
     box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.38);
 }
 
-nav div {
+nav div.nav_item {
     display: table-cell;
-    color: white;
+    color: black;
     padding: 5px;
     padding-bottom: 0;
 }
@@ -23,10 +23,15 @@ nav div {
     position: relative;
     width: 30px;
     height: 30px;
-    left: 45px;
-    top: -7px;
+    right: 260px;
+    top: -2px;
     z-index: 1;
     cursor: pointer;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
 }
 
 .searchbar {
@@ -34,7 +39,7 @@ nav div {
     width: 200px;
     border-radius: 30px;
     position: relative;
-    top: -20px;
+    top: -15px;
     outline: none;
     background-color: white;
     padding-left: 40px;
@@ -42,15 +47,120 @@ nav div {
 
 .text_link {
     font-size: 30px;
-    color: black
+    color: black;
+    cursor: pointer;
+}
+
+.text_link :hover {
+    color: #AB46AA;
+    text-decoration: underline;
+    text-underline-position: 2px;
+    transition: 0.3s;
 }
 
 * {
     padding: 0;
     margin: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.clicked {
+    color: #AB46AA !important;
+    text-decoration: underline !important;
+}
+
+.gcse-search {
+    width: 50%;
+}
+
+.outer-con {
+    margin: 5px;
+    border-left: 2px solid #AB46AA;
+}
+
+._headline {
+    font-family: "Noto sans tc";
+    color: #AB46AA;
+    font-size: 50px;
+}
+
+.currently_on {
+    background-color: Yellow;
 }
 
 @font-face {
     font-family: "Noto sans tc";
-    src: url('stuff/NotoSansCJKtc-Black.otf')
+    src: url('stuff/NotoSansCJKtc-Regular.otf')
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.guide {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+
+.guide-con {
+    border-radius: 10px;
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    padding-bottom: 50px;
+    border: 1px solid #888;
+    width: 75%;
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+
+.got-it {
+    color: white;
+    font-family: "Noto sans tc";
+    border-radius: 5px;
+    float: right;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: #AB46AA;
+    outline: none;
+}
+
+.got-it:hover {
+    background-color: rgb(248, 130, 246);
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0.4;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.4
+    }
+    to {
+        opacity: 1
+    }
 }

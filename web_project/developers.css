@@ -1,0 +1,10 @@
+.outer-con {
+    margin: 5px;
+    border-left: 2px solid #AB46AA;
+}
+
+._headline {
+    font-family: "Noto sans tc";
+    color: #AB46AA;
+    font-size: 50px;
+}
