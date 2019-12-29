@@ -59,98 +59,97 @@
         Text to ASCII converter
         <hr> Enter character:<br>
         <textarea id="Ascii" style="height:50px;" wrap="off"></textarea> result:
-        <br><textarea style="height:50px;" readonly id="ascii_out"></textarea> <br><br>
+        <br><textarea style="height:50px;" readonly id="ascii_out"></textarea> <br>
         <hr><br><button onclick="begin()" class="runbt" id="rbt">Run code</button>
         <button onclick="play()" class="runbt" id="plbt">Play</button><br><br>
-        <button onclick="playpause()" class="runbt" id="ppbt">Pause/Resume</button>
-        <button onclick="stop()" class="runbt" id="stbt">Stop</button><br>
+        <button onclick="playpause()" class="runbt" id="ppbt">Pause/Resume</button><br><br>
+        <button onclick="stop()" class="runbt" id="stbt">Stop</button><br><br>
         <button onclick="faster()" class="runbt" id="fabt">Faster</button>
         <button onclick="slower()" class="runbt" id="slbt">Slower</button>
-        <div id="interval">Current interval: 20 ms
+        <div id="interval">Current interval:<textarea id="inter_num" style="width:33px;height:15px; position:relative; top:2px;">100</textarea id="inter_num" style="width:30px;height:15px;">ms
+            <button onclick="do_once()" class="runbt" id="doon">Next cmd</button>
         </div>
-        <hr>
-        <div>PowerPoint:<br><a download href="#">Click here</a></div>
     </div>
     <div class="outer-con" style="float:left;">Code:<br><textarea class="linked" id="num" style="width:30px; height:300px; border-right: none;" readonly>1.</textarea><textarea class="linked" id="code_block" wrap="off" style="width:600px; height:300px;"></textarea></div>
-    <div class="outer-con" style="float:left; height:330px;">Input:<br><textarea id="input_box" style="width:300px; height:130px;"></textarea><br>Output:<br><textarea id="output" style="width:300px; height:140px;" readonly></textarea></div>
-    <div class="outer-con" style="float:left; width:1010px; height:190px;">
-        <div id="c_cmd">Current command:</div>
-        <table class="celltable" id="celltable">
-            <tr>
-                <td class="currently_on">cell#1</td>
-                <td>cell#2</td>
-                <td>cell#3</td>
-                <td>cell#4</td>
-                <td>cell#5</td>
-                <td>cell#6</td>
-                <td>cell#7</td>
-                <td>cell#8</td>
-                <td>cell#9</td>
-                <td>cell#10</td>
-            </tr>
-            <tr>
-                <td class="currently_on">0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>cell#11</td>
-                <td>cell#12</td>
-                <td>cell#13</td>
-                <td>cell#14</td>
-                <td>cell#15</td>
-                <td>cell#16</td>
-                <td>cell#17</td>
-                <td>cell#18</td>
-                <td>cell#19</td>
-                <td>cell#20</td>
-            </tr>
-            <tr>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>cell#21</td>
-                <td>cell#22</td>
-                <td>cell#23</td>
-                <td>cell#24</td>
-                <td>cell#25</td>
-                <td>cell#26</td>
-                <td>cell#27</td>
-                <td>cell#28</td>
-                <td>cell#29</td>
-                <td>cell#30</td>
-            </tr>
-            <tr>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-        </table>
-        <p>Hight-lighted cell means that ptr is on that cell. Click on the cell to change it to normal text.</p>
-    </div>
+        <div class="outer-con" style="float:left; height:330px;">Input:<br><textarea id="input_box" style="width:300px; height:130px;"></textarea><br>Output:<br><textarea id="output" style="width:300px; height:140px;" readonly></textarea></div>
+        <div class="outer-con" style="float:left; width:1010px; height:190px;">
+            <div id="c_cmd">Current command:</div>
+            <table class="celltable" id="celltable">
+                <tr>
+                    <td class="currently_on">cell#1</td>
+                    <td>cell#2</td>
+                    <td>cell#3</td>
+                    <td>cell#4</td>
+                    <td>cell#5</td>
+                    <td>cell#6</td>
+                    <td>cell#7</td>
+                    <td>cell#8</td>
+                    <td>cell#9</td>
+                    <td>cell#10</td>
+                </tr>
+                <tr>
+                    <td class="currently_on">0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>cell#11</td>
+                    <td>cell#12</td>
+                    <td>cell#13</td>
+                    <td>cell#14</td>
+                    <td>cell#15</td>
+                    <td>cell#16</td>
+                    <td>cell#17</td>
+                    <td>cell#18</td>
+                    <td>cell#19</td>
+                    <td>cell#20</td>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>cell#21</td>
+                    <td>cell#22</td>
+                    <td>cell#23</td>
+                    <td>cell#24</td>
+                    <td>cell#25</td>
+                    <td>cell#26</td>
+                    <td>cell#27</td>
+                    <td>cell#28</td>
+                    <td>cell#29</td>
+                    <td>cell#30</td>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            </table>
+            <p>Hight-lighted cell means that ptr is on that cell.</p>
+        </div>
 </body>
 
 </html>

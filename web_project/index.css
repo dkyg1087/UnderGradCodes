@@ -9,14 +9,31 @@ textarea:focus {
 }
 
 .runbt {
-    width: 49%;
-    height: 60px;
+    outline: none;
+    background-color: rgb(194, 82, 192);
+    border: 1px solid white;
+    cursor: pointer;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    box-shadow: 0 3px #999;
+    transition-duration: 0.4s;
 }
 
-.funcbt {
-    float: left;
-    width: 60px;
-    height: 60px;
+.runbt:hover {
+    background-color: white;
+    border: 1px solid #AB46AA;
+    color: #AB46AA;
+}
+
+.runbt:active {
+    background-color: white;
+    box-shadow: 0 1px #666;
+    transform: translateY(4px);
 }
 
 .celltable {
@@ -26,115 +43,4 @@ textarea:focus {
 
 .celltable tr td {
     border: 1px solid #AB46AA;
-}
-
-.hover {
-    position: absolute;
-    background-image: url(img/2.png);
-    background-size: cover;
-    width: 150px;
-    height: 150px;
-    top: 100%;
-    left: 100%;
-    margin-top: -150px;
-    margin-left: -50px;
-}
-
-::-webkit-scrollbar {
-    display: none;
-}
-
-table tr {
-    background-color: white;
-}
-
-.divcss {
-    box-shadow: 5px 9px 17px #333333;
-    -webkit-box-shadow: 5px 9px 17px #333333;
-    -moz-box-shadow: 5px 9px 17px #333333;
-    border-radius: 40px;
-    -webkit-border-radius: 40px;
-    -moz-border-radius: 40px;
-}
-
-.textdiv {
-    opacity: 0.87;
-    text-shadow: 2px 2px 6px #333333;
-}
-
-.gifs {
-    position: absolute;
-    width: 550px;
-    height: 400px;
-    left: 50%;
-    top: 50%;
-    z-index: 75;
-    display: none;
-    margin-top: -200px;
-    margin-left: -275px;
-}
-
-.closebtn {
-    position: relative;
-    border: solid;
-    border-color: white;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-image: url(img/escbut.jpg);
-    background-size: cover;
-    background-position: center;
-    top: 10px;
-    left: 10px;
-}
-
-.switchbtn {
-    position: relative;
-    border: solid;
-    border-color: white;
-    border-radius: 10%;
-    cursor: pointer;
-    left: 37%;
-}
-
-#popBox {
-    position: absolute;
-    display: none;
-    width: 500px;
-    height: 300px;
-    left: 50%;
-    top: 50%;
-    margin-top: -150px;
-    margin-left: -250px;
-    z-index: 74;
-    display: none;
-    background: url(img/start.png);
-    background-size: cover;
-}
-
-#mytable {
-    position: absolute;
-    top: 88%;
-}
-
-#count {
-    text-align: center;
-    line-height: 50px;
-    vertical-align: middle;
-    position: relative;
-    font-size: 20px;
-    height: 50px;
-    width: 40px;
-    color: red;
-    font-weight: bold;
-    left: 87%;
-    top: -5%;
-    border-radius: 10%;
-    background-color: white;
-}
-
-#mytable tr td {
-    background-color: white;
-    transition: background-color 0.5s;
 }
