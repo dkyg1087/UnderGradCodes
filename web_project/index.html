@@ -15,7 +15,39 @@
 <body>
     <div id="guide" class="guide">
         <div class="guide-con">
-            <p>dsadsa</p>
+            <div class="slideshow-container">
+
+                <div class="mySlides fade">
+                    <div class="numbertext">1 / 3</div>
+                    <img src="stuff/images/guide1.png" style="width:100%" class="guide_img">
+                    <a download href="#">our powerpoint</a>
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">2 / 3</div>
+                    <img src="stuff/images/guide2.png" style="width:100%" class="guide_img">
+                    <a download href="#">our powerpoint</a>
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">3 / 3</div>
+                    <img src="stuff/images/guide3.jpg" style="width:100%" class="guide_img">
+                    <div class="text">Just remember to have fun!</div>
+                    <a download href="#">our powerpoint</a>
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+            </div>
+            <br>
+
+            <div style="text-align:center">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+
             <button id="got-it" class="got-it">I got it!</button>
         </div>
     </div>
@@ -69,6 +101,7 @@
         <div id="interval">Current interval:<textarea id="inter_num" style="width:33px;height:15px; position:relative; top:2px;">100</textarea id="inter_num" style="width:30px;height:15px;">ms
             <button onclick="do_once()" class="runbt" id="doon">Next cmd</button>
         </div>
+        <a download href="#">our powerpoint</a>
     </div>
     <div class="outer-con" style="float:left;">Code:<br><textarea class="linked" id="num" style="width:30px; height:300px; border-right: none;" readonly>1.</textarea><textarea class="linked" id="code_block" wrap="off" style="width:600px; height:300px;"></textarea></div>
         <div class="outer-con" style="float:left; height:330px;">Input:<br><textarea id="input_box" style="width:300px; height:130px;"></textarea><br>Output:<br><textarea id="output" style="width:300px; height:140px;" readonly></textarea></div>
