@@ -84,7 +84,7 @@ with open("GirlNames.txt","r") as gfp,open("BoyNames.txt","r") as bfp:
                 print(names,"is neither in the Boys nor the Girls list.")
 """
 import matplotlib.pyplot as plt
-with open("1994_Weekly_Gas_Avgerages.txt","r")as fp:
+with open("c:/Users/derek/Desktop/Code/Python/1994_Weekly_Gas_Avgerages.txt","r")as fp:
     plt.style.use('ggplot')
     x=fp.readlines()
     x=[int(x) for x in x]
