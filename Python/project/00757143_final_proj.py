@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import os
 font = FontProperties(fname=os.environ['WINDIR']+'\\Fonts\\kaiu.ttf', size=5)
-def do_stuff(item_data,cmd):
+def do_stuff(item_data,cmd,starttime,endtime):
     d=[]
     targ=[]
     for s in item_data:
@@ -27,7 +27,7 @@ def do_stuff(item_data,cmd):
             targ[i]="文書"
         elif item in ['收視費','連線費','市話寬頻業務 ','代收小額付費','電信服務費','電信服務','電信','電信費','市話寬頻業務','市話寬頻','網際網路收入','家居用品','訊號費','寬頻','市話','網路線','月租費','手機']:
             targ[i]="電信網路"
-        elif item in ['民生用品','面紙','毛毯','棉褲','童裝','雨衣','日用品','毛浴巾','日用品百貨','女鞋',"開器用品","輕便雨衣","洗衣精","打火機",'運動用品','衛生紙','衣物','廚具',]:
+        elif item in ['民生用品','面紙','毛毯','棉褲','童裝','雨衣','日用品','毛浴巾','日用品百貨','女鞋',"開器用品","輕便雨衣","洗衣精","打火機","生活用品",'運動用品','衛生紙','衣物','廚具',]:
             targ[i]="生活"
         elif item in ['水費','電費','桶裝瓦斯','瓦斯費','瓦斯桶','天然氣費','水電瓦斯','瓦斯']:
             targ[i]="水電瓦斯"
@@ -35,9 +35,9 @@ def do_stuff(item_data,cmd):
             targ[i]="資訊"
         elif item in ['藥品','醫療注射液','衛生用品','口含錠','口罩','化妝品','清潔袋','美容','感冒糖漿','化粧品','生理食鹽水','保健食品']:
             targ[i]="藥妝"
-        elif item in ['電影網路訂票手續費','手續費','洗車','運費','服務費','洗車費','其他服務費','佣金','交通票券手續費','代收運費']:
+        elif item in ['電影網路訂票手續費','手續費','洗車','運費','服務費','洗車費','其他服務費','佣金','交通票券手續費','代收運費','清潔用品']:
             targ[i]="手續服務費"
-        elif item in ['門票','學費','貓糧','運動配件','營養品','觀景臺門票','禮','飼料','農藥','咖啡豆','卡通','茶葉','兌換碼','房租','烘焙材料','保溫杯','電池','玩具','測驗費用','會員卡費用','宅急便']:
+        elif item in ['門票','學費','貓糧','運動配件','營養品','觀景臺門票','禮','飼料','農藥','咖啡豆','卡通','茶葉','兌換碼','房租','烘焙材料','保溫','電池','玩具','測驗費用','會員卡費用','宅急便',"米酒",'住宿費']:
             targ[i]="其他"
         elif item in ['停車位租金']:
             targ[i]="停車費"
@@ -47,6 +47,8 @@ def do_stuff(item_data,cmd):
             targ[i]="生鮮"
         elif item in ["報紙",'報紙 ']:
             targ[i]="報紙"
+        elif item in ["棉褲","童裝","衣物","服飾",'服飾配件']:
+            targ[i]="服飾"
     c=Counter(targ)
     #print(c)
     name=[]
@@ -60,6 +62,13 @@ def do_stuff(item_data,cmd):
         name=c.keys()
     x_pos=[i for i,_ in enumerate(name)]
     plt.bar(x_pos,freq,color="green")
+    if cmd==1:
+         plt.title("從"+str(starttime)+"至"+str(endtime)+"之商品分類圖",fontproperties=font)
+    elif cmd==2:
+         plt.title("從"+str(starttime)+"至"+str(endtime)+"之縣市分類圖",fontproperties=font)
+    else:
+         plt.title("從"+str(starttime)+"至"+str(endtime)+"之前"+str(len(name))+"大產業公司圖",fontproperties=font,fontsize="10")
+   
     plt.xticks(x_pos,name,fontproperties=font)
     plt.xlabel("分類",fontproperties=font)
     plt.ylabel("出現次數",fontproperties=font)
@@ -114,7 +123,7 @@ def find_comp(string):
         return string
 def find_item(item):
     s=""
-    cheatsheet=['共','計','項','元','，','*','等',',','。','個','一','瓶','批','包','盒','組']
+    cheatsheet=['共','計','項','元','，','*','等',',','。','個','一','瓶','批','包','盒','組',"杯"]
     for char in item:
         if not char.isdigit():
             if char not in cheatsheet:
@@ -219,13 +228,13 @@ while True:
         if pla_or_pro=="1":
             item_data=[s[2] for s in need]
             #print(item_data)
-            do_stuff(item_data,1)
+            do_stuff(item_data,1,starttime,endtime)
         elif pla_or_pro=="2":
             item_data=[s[1] for s in need]
-            do_stuff(item_data,2)
+            do_stuff(item_data,2,starttime,endtime)
         else:
             item_data=[s[0] for s in need]
-            do_stuff(item_data,3)
+            do_stuff(item_data,3,starttime,endtime)
     else:
         break
     ctrl=input("Again? (yes/no)\n")

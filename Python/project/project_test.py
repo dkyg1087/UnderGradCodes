@@ -1,13 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-class Comp:
-    def __init__(self,comp_name,aka=None):
-        self.comp_name=comp_name
-        self.aka=aka
-class Pos:
-    def __init__(self,city,district):
-        self.city=city
-        self.district=district
 url="https://www.etax.nat.gov.tw/etw-main/web/ETW183W3_10809/"
 html=requests.get(url).content.decode('utf-8')
 sp=BeautifulSoup(html,'html.parser')
