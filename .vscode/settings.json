@@ -2,6 +2,7 @@
     "python.pythonPath": "C:\\Users\\derek\\Anaconda3\\python.exe",
     "files.associations": {
         "iostream": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "array": "cpp"
     }
 }

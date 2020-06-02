@@ -1,0 +1,59 @@
+Spiderman makes a weapon with offense 137,759,180
+Spiderman clones a weapon with offense 137,759,180
+Spiderman's weapon#1 becomes: a weapon with offense 123,983,262
+Spiderman clones a weapon with offense 137,759,180
+Spiderman's weapon#2 becomes: a weapon with offense 123,983,262
+Spiderman cannot make weapons now!!
+Spiderman -> HP: 9,041,656,448, attack: 385,725,704
+
+Superman makes a weapon with offense 113,582,087
+Superman makes a weapon with offense 174,582,400
+Superman makes a weapon with offense 126,546,830
+Superman cannot make weapons now!!
+Superman -> HP: 9,250,045,312, attack: 414,711,317
+
+Spiderman attacks! Superman's HP becomes 8,864,319,608
+Superman attacks! Spiderman's HP becomes 8,626,945,131
+Spiderman attacks! Superman's HP becomes 8,478,593,904
+Superman attacks! Spiderman's HP becomes 8,212,233,814
+Spiderman attacks! Superman's HP becomes 8,092,868,200
+Superman attacks! Spiderman's HP becomes 7,797,522,497
+Spiderman attacks! Superman's HP becomes 7,707,142,496
+Superman attacks! Spiderman's HP becomes 7,382,811,180
+Spiderman attacks! Superman's HP becomes 7,321,416,792
+Superman attacks! Spiderman's HP becomes 6,968,099,863
+Spiderman attacks! Superman's HP becomes 6,935,691,088
+Superman attacks! Spiderman's HP becomes 6,553,388,546
+Spiderman attacks! Superman's HP becomes 6,549,965,384
+Superman attacks! Spiderman's HP becomes 6,138,677,229
+Spiderman attacks! Superman's HP becomes 6,164,239,680
+Superman attacks! Spiderman's HP becomes 5,723,965,912
+Spiderman attacks! Superman's HP becomes 5,778,513,976
+Superman attacks! Spiderman's HP becomes 5,309,254,595
+Spiderman attacks! Superman's HP becomes 5,392,788,272
+Superman attacks! Spiderman's HP becomes 4,894,543,278
+Spiderman attacks! Superman's HP becomes 5,007,062,568
+Superman attacks! Spiderman's HP becomes 4,479,831,961
+Spiderman attacks! Superman's HP becomes 4,621,336,864
+Superman attacks! Spiderman's HP becomes 4,065,120,644
+Spiderman attacks! Superman's HP becomes 4,235,611,160
+Superman attacks! Spiderman's HP becomes 3,650,409,327
+Spiderman attacks! Superman's HP becomes 3,849,885,456
+Superman attacks! Spiderman's HP becomes 3,235,698,010
+Spiderman attacks! Superman's HP becomes 3,464,159,752
+Superman attacks! Spiderman's HP becomes 2,820,986,693
+Spiderman attacks! Superman's HP becomes 3,078,434,048
+Superman attacks! Spiderman's HP becomes 2,406,275,376
+Spiderman attacks! Superman's HP becomes 2,692,708,344
+Superman attacks! Spiderman's HP becomes 1,991,564,059
+Spiderman attacks! Superman's HP becomes 2,306,982,640
+Superman attacks! Spiderman's HP becomes 1,576,852,742
+Spiderman attacks! Superman's HP becomes 1,921,256,936
+Superman attacks! Spiderman's HP becomes 1,162,141,425
+Spiderman attacks! Superman's HP becomes 1,535,531,232
+Superman attacks! Spiderman's HP becomes 747,430,108
+Spiderman attacks! Superman's HP becomes 1,149,805,528
+Superman attacks! Spiderman's HP becomes 332,718,791
+Spiderman attacks! Superman's HP becomes 764,079,824
+Superman attacks! Spiderman's HP becomes 0
+Superman wins!
