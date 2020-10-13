@@ -205,10 +205,13 @@ void drawRectangle(int x1, int y1, int x2, int y2)
 {
 	if (x1 < x2 && y1 < y2)
 	{
-		drawLine(x1, y1, x2, y1);
-		drawLine(x2, y1, x2, y2);
-		drawLine(x2, y2, x1, y2);
-		drawLine(x1, y2, x1, y1);
+		// drawLine(x1, y1, x2, y1);
+		// drawLine(x2, y1, x2, y2);
+		// drawLine(x2, y2, x1, y2);
+		// drawLine(x1, y2, x1, y1);
+		for(int i=y2;i>=y1;i--){
+			drawLine(x1,i,x2,i);
+		}
 	}
 	else
 	{
@@ -225,35 +228,33 @@ void drawRectangle(int x1, int y1, int x2, int y2)
  * Midpoint circle algorithm
  */
 void drawCircle(int x1, int y1, int x2, int y2)
-{
+{	
 	int r = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 	double d;
 	int x, y;
+	for(int i=r;i>0;i--){
+		x = 0;
+		y = i;
+		d = 1.25 - i;
 
-	x = 0;
-	y = r;
-	d = 1.25 - r;
-
-	while (x <= y)
-	{
-		drawDot(x1 + x, y1 + y);
-		drawDot(x1 - x, y1 + y);
-		drawDot(x1 + x, y1 - y);
-		drawDot(x1 - x, y1 - y);
-		drawDot(x1 + y, y1 + x);
-		drawDot(x1 - y, y1 + x);
-		drawDot(x1 + y, y1 - x);
-		drawDot(x1 - y, y1 - x);
-		x++;
-		if (d < 0)
-		{
-			d += 2 * x + 3;
-		}
-		else
-		{
-			y--;
-			d += 2 * (x - y) + 5;
-		}
+		while (x <= y){
+			drawDot(x1 + x, y1 + y);
+			drawDot(x1 - x, y1 + y);
+			drawDot(x1 + x, y1 - y);
+			drawDot(x1 - x, y1 - y);
+			drawDot(x1 + y, y1 + x);
+			drawDot(x1 - y, y1 + x);
+			drawDot(x1 + y, y1 - x);
+			drawDot(x1 - y, y1 - x);
+			x++;
+			if (d < 0){
+				d += 2 * x + 3;
+			}
+			else{
+				y--;
+				d += 2 * (x - y) + 5;
+			}
+		}	
 	}
 }
 
