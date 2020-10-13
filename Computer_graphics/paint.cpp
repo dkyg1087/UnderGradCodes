@@ -103,7 +103,7 @@ std::vector<Point>currentPoints;
 std::list<int> undoHistory;
 std::list<int> redoHistory;
 std::vector<Point> redoPoints;
-bool fillMode=false;
+bool fillMode=false,isEraser=false;
 /*----------------------------------------------------------------
     Main function , sets up attributes and menu for the window.
 ------------------------------------------------------------------*/
@@ -264,7 +264,16 @@ void mouse_function(int x1,int y1,int x2,int y2){};
 void motion_function(int x,int y){};
 void type_function(int value){};
 void eraser_function(int value){};
-void control_function(int value){};
+void control_function(int value){
+    switch(value){
+        case UNDO:
+            undo_function();
+            break;
+        case REDO:
+            redo_function();
+            break;
+    }
+}
 void clear_function(){
     currentPoints.clear();
     undoHistory.clear();
@@ -291,3 +300,32 @@ void backgroundcolor_function(int value){
     }
     display_function();
 };
+void undo_function(){
+    if(undoHistory.size()>0){
+        if(undoHistory.back()!=currentPoints.size()&&redoHistory.back()!=currentPoints.size())redoHistory.push_back(currentPoints.size());
+        int numSteps = currentPoints.size()-undoHistory.back();
+        for(int i=0;i<numSteps;i++){
+            redoPoints.push_back(currentPoints.back());
+            currentPoints.pop_back();
+        }
+        redoHistory.push_back(undoHistory.back());
+        undoHistory.pop_back();
+    }
+    else printf("You don't have any records left.");
+}
+void redo_function(){
+    if(redoHistory.size()>1){
+        undoHistory.push_back(redoHistory.back());
+        redoHistory.pop_back();
+        int numRemove = redoHistory.back() - currentPoints.size();
+        for(int i=0;i<numRemove;i++){
+            currentPoints.push_back(redoPoints.back());
+            redoPoints.pop_back();
+        }
+    }
+    else printf("Can't redo. You haven't done anything further.");
+}
+void drawPoint(int xPos,int yPos){
+    if(isEraser) currentPoints.push_back(Point(xPos,windowHeight-yPos,bckColor[0],bckColor[1],bckColor[2]));
+    else currentPoints.push_back(Point(xPos,windowHeight-yPos,red,green,blue));
+}
