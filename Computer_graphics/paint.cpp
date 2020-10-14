@@ -96,6 +96,8 @@ class Point{
 /* intial global variables */
 int windowWidth=512;
 int windowHeight=512;
+int eraserSize=7;
+int currentShape=DOT;
 float red=0.0,green=0.0,blue=0.0;
 float bckColor[3]={1.0,1.0,1.0};
 MenuObject color_menu,type_menu,file_menu,eraser_menu,control_menu,fillmode_menu,backgroundcolor_menu;
@@ -103,7 +105,7 @@ std::vector<Point>currentPoints;
 std::list<int> undoHistory;
 std::list<int> redoHistory;
 std::vector<Point> redoPoints;
-bool fillMode=false,isEraser=false;
+bool fillMode=false,isEraser=false,isSecond = false;
 /*----------------------------------------------------------------
     Main function , sets up attributes and menu for the window.
 ------------------------------------------------------------------*/
@@ -262,8 +264,24 @@ void menu_function(int value){
 void keyboard_function(unsigned char key,int x,int y){};
 void mouse_function(int x1,int y1,int x2,int y2){};
 void motion_function(int x,int y){};
-void type_function(int value){};
-void eraser_function(int value){};
+void type_function(int value){
+    isSecond = false;
+    isEraser = false;
+    currentShape=value;
+}
+void eraser_function(int value){
+    switch(value){
+        case BIG:
+            eraserSize = 12;
+            break;
+        case MEDIUM:
+            eraserSize = 7;
+            break;
+        case SMALL:
+            eraserSize=2;
+            break;
+    }
+}
 void control_function(int value){
     switch(value){
         case UNDO:
@@ -328,4 +346,7 @@ void redo_function(){
 void drawPoint(int xPos,int yPos){
     if(isEraser) currentPoints.push_back(Point(xPos,windowHeight-yPos,bckColor[0],bckColor[1],bckColor[2]));
     else currentPoints.push_back(Point(xPos,windowHeight-yPos,red,green,blue));
+}
+void erasePoint(int x,int y){
+    for(i=-1*eraserSize;i<=eraserSize;i++)for(int j=-1*eraserSize;j<=eraserSize;j++)drawPoint(x+i,y+j);
 }
