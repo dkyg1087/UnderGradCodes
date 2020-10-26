@@ -1,398 +1,593 @@
-/******************************************************************
- * This program illustrates the fundamental instructions for handling 
- * mouse and keyboeard events as well as menu buttons.
- */
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+/*----------------------------------------------------------------
+    00757143 
+------------------------------------------------------------------*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<GL/glut.h>
+#include<vector>
+#include<time.h>
+#include<math.h>
+#include<list>
+typedef int MenuObject;
+/* define some overly used variables with names*/
+#define WHITE 0
+#define BLACK 1
+#define RED 2
+#define GREEN 3
+#define BLUE 4
+#define YELLOW 5
+#define PURPLE 6
+#define CYAN 7
+#define RANDOM 8
 
-#include <GL/glut.h>
+#define DOT 10
+#define LINE 20
+#define TRIANGLE 30
+#define RECTANGLE 40
+#define CIRCLE 50
+#define AIRBRUSH 60
 
-#define    SIZEX   800
-#define    SIZEY   800
+#define BIG 100
+#define MEDIUM 200
+#define SMALL 300
 
-#define    MY_QUIT -1
-#define    MY_CLEAR -2
-#define    MY_SAVE  -3
-#define    MY_BLEND -4
-#define    MY_LOAD  -5
+#define REDO 1000
+#define UNDO 2000
 
-#define    WHITE   1
-#define    RED     2
-#define    GREEN   3
-#define    BLUE    4
+#define CLEAR 400
+#define QUIT 888
 
-#define    POINT   1
-#define    LINE    2
-#define    POLYGON 3
-#define    CIRCLE  4
-#define    CURVE   5
+#define FILL 111
+#define NO_FILL 222
 
-typedef    int   menu_t;
-menu_t     top_m, color_m, file_m, type_m;
+#define CUSTOM 123
+/* all the function prototypes */
 
-int        height=512, width=512;
-unsigned char  image[SIZEX*SIZEY][4];  /* Image data in main memory */
+void init_function();
+void display_function();
+void reshape_function(int,int);
+void keyboard_function(unsigned char,int,int);
+void mouse_function(int,int,int,int);
+void motion_function(int,int);
+void color_function(int);
+void type_function(int);
+void eraser_function(int);
+void control_function(int);
+void menu_function(int);
+void clear_function();
+void fillmode_function(int);
+void backgroundcolor_function(int);
+void undo_function();
+void redo_function();
+void erasePoint(int,int);
+void drawPoint(int,int);
+void paintBrush(int,int);
+void drawLine(int,int,int,int);
+void drawRectangle(int,int,int,int);
+void drawCircle(int,int,int);
+/* A class for a dot to store picture easily*/
+class Point{
+    private:
+        int xPos;
+        int yPos;
+        float red,green,blue;
+    public:
+        Point(int x,int y,float r,float g,float b){
+            xPos=x;
+            yPos=y;
+            red=r;
+            green=g;
+            blue=b;
+        }
+        int getX(){
+            return xPos;
+        }
+        int getY(){
+            return yPos;
+        }
+        float getR(){
+            return red;
+        }
+        float getG(){
+            return green;
+        }
+        float getB(){
+            return blue;
+        }
+        void setPos(int x,int y){
+            xPos = x;
+            yPos = y;
+        }
+        void setColor(float r,float g,float b){
+            red=r;
+            green=g;
+            blue=b;
+        }
+};
 
-int        pos_x=-1, pos_y=-1;
-float      myColor[3]={0.0,0.0,0.0};
-int        obj_type = -1;
-int        first=0;      /* flag of initial pointis for lines and curve,..*/
-int        vertex[128][2]; /*coords of vertices */
-int        side=0;         /*num of sides of polygon */
-float      pnt_size=1.0;
+/* intial global variables */
+int windowWidth=512;
+int windowHeight=512;
+int eraserSize=7;
+int brushSize=7;
+int firstX,firstY;
+int currentShape=DOT;
+float red=0.0,green=0.0,blue=0.0;
+float bckColor[3]={1.0,1.0,1.0};
+MenuObject color_menu,type_menu,file_menu,eraser_menu,control_menu,fillmode_menu,backgroundcolor_menu;
+std::vector<Point>currentPoints;
+std::list<int> undoHistory;
+std::list<int> redoHistory;
+std::vector<Point> redoPoints;
+bool fillMode=false,isEraser=false,isSecond = false;
+/*----------------------------------------------------------------
+    Main function , sets up attributes and menu for the window.
+------------------------------------------------------------------*/
+int main(int argc, char **argv){
+    glutInit(&argc, argv); // make connection with server
+    glutInitWindowPosition(200,200); // intitialize window position
+    glutInitWindowSize(windowWidth,windowHeight); // initialize window size
+    glutInitDisplayMode(GLUT_RGBA|GLUT_SINGLE); // initialize display mode
+    init_function();
+    glutCreateWindow("Paint(knock off)");
+    glutDisplayFunc(display_function);
+    glutReshapeFunc(reshape_function);
+    glutKeyboardFunc(keyboard_function);
+    glutMouseFunc(mouse_function);
+    glutMotionFunc(motion_function);
 
-/*------------------------------------------------------------
- * Callback function for display, redisplay, expose events
- * Just clear the window again
- */
-void display_func(void)
-{
-  /* define window background color */
-  //glClear(GL_COLOR_BUFFER_BIT);
-  glFlush();
+    color_menu = glutCreateMenu(color_function);
+    glutAddMenuEntry("White", WHITE);
+    glutAddMenuEntry("Black", BLACK);
+    glutAddMenuEntry("Red", RED);
+    glutAddMenuEntry("Green", GREEN);
+    glutAddMenuEntry("Yellow", YELLOW);
+    glutAddMenuEntry("Blue", BLUE);
+    glutAddMenuEntry("Purple", PURPLE);
+    glutAddMenuEntry("Cyan",CYAN);
+    glutAddMenuEntry("Random",RANDOM);
+    //glutAddMenuEntry("Custom",CUSTOM);
+
+    type_menu = glutCreateMenu(type_function);
+    glutAddMenuEntry("Dot",DOT);
+    glutAddMenuEntry("Line",LINE);
+    //glutAddMenuEntry("Triangle",TRIANGLE);
+    glutAddMenuEntry("Rectangle",RECTANGLE);
+    glutAddMenuEntry("Circle",CIRCLE);
+    glutAddMenuEntry("Airbrush",AIRBRUSH);
+
+    eraser_menu=glutCreateMenu(eraser_function);
+    glutAddMenuEntry("Big",BIG);
+    glutAddMenuEntry("Medium",MEDIUM);
+    glutAddMenuEntry("Small",SMALL);
+
+    control_menu=glutCreateMenu(control_function);
+    glutAddMenuEntry("redo",REDO);
+    glutAddMenuEntry("undo",UNDO);
+
+    fillmode_menu = glutCreateMenu(fillmode_function);
+    glutAddMenuEntry("fill",FILL);
+    glutAddMenuEntry("no fill",NO_FILL);
+
+    backgroundcolor_menu=glutCreateMenu(backgroundcolor_function);
+    glutAddMenuEntry("black",BLACK);
+    glutAddMenuEntry("white",WHITE);
+    //glutAddMenuEntry("Custom",CUSTOM);
+
+    MenuObject main_menu= glutCreateMenu(menu_function);
+    glutAddSubMenu("Color",color_menu);
+    glutAddSubMenu("Background color",backgroundcolor_menu);
+    glutAddSubMenu("Type",type_menu);
+    glutAddSubMenu("Fill mode",fillmode_menu);
+    glutAddSubMenu("Eraser",eraser_menu);
+    glutAddSubMenu("Control",control_menu);
+    glutAddMenuEntry("Clear",CLEAR);
+    glutAddMenuEntry("Quit",QUIT);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+    glutMainLoop();
+    printf("OK");
+    return 0;
 }
-
-
-/*-------------------------------------------------------------
- * reshape callback function for window.
- */
-void my_reshape(int new_w, int new_h)
-{
-  height = new_h;
-  width = new_w;
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluOrtho2D(0.0, (double) width, 0.0, (double) height);
-  glViewport(0,0,width,height);
-  glMatrixMode(GL_MODELVIEW);
-
-  glutPostRedisplay();   /*---Trigger Display event for redisplay window*/
+/*----------------------------------------------------------------
+initalize data alighment and others
+------------------------------------------------------------------ */
+void init_function(){
+    glClearColor(1.0,1.0,1.0,1.0);
+    glColor3f(red,green,blue);
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(0.0,windowWidth,0.0,windowHeight);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
-
-
-/*--------------------------------------------------------------
- * Callback function for keyboard event.
- * key = the key pressed,
- * (x,y)= position in the window, where the key is pressed.
- */
-void keyboard(unsigned char key, int x, int y)
-{
-  if(key=='Q'||key=='q') exit(0);
-}
-
-
-/*---------------------------------------------------------
- * Procedure to draw a polygon
- */
-void draw_polygon()
-{
-  int  i;
-
-  glBegin(GL_POLYGON);
-    for(i=0;i<side;i++)
-      glVertex2f(vertex[i][0], height-vertex[i][1]);
-  glEnd();
-  glFinish();
-  side = 0;    /* set side=0 for next polygon */
-}
-
-
-
-/*------------------------------------------------------------
- * Procedure to draw a circle
- */
-void draw_circle()
-{
-  static GLUquadricObj *mycircle=NULL;
-
-  if(mycircle==NULL){
-    mycircle = gluNewQuadric();
-    gluQuadricDrawStyle(mycircle,GLU_FILL);
-  }
-  glPushMatrix();
-  glTranslatef(pos_x, height-pos_y, 0.0);
-  gluDisk(mycircle,
-       0.0,           /* inner radius=0.0 */
-	  10.0,          /* outer radius=10.0 */
-	  16,            /* 16-side polygon */
-	   3);
-  glPopMatrix();
-}
-
-
-/*------------------------------------------------------------
- * Callback function handling mouse-press events
- */
-void mouse_func(int button, int state, int x, int y)
-{
-  if(button!=GLUT_LEFT_BUTTON||state!=GLUT_DOWN)
-    return;
-
-  switch(obj_type){
-  case POINT:
-    glPointSize(pnt_size);     /*  Define point size */
-    glBegin(GL_POINTS);     /*  Draw a point */
-       glVertex2f(x, height-y);
-    glEnd();
-    break;
-  case LINE:
-    if(first==0){
-      first = 1;
-      pos_x = x; pos_y = y;
-	  glPointSize(pnt_size);
-      glBegin(GL_POINTS);   /*  Draw the 1st point */
-	    glVertex3f(x, height-y, 0);
-      glEnd();
-    }else{
-      first=0;
-      glLineWidth(pnt_size);     /* Define line width */
-      glBegin(GL_LINES);    /* Draw the line */
-        glVertex2f(pos_x, height - pos_y);
-	    glVertex2f(x, height - y);
-      glEnd();
+/*----------------------------------------------------------------
+color section function
+---------------------------------------------------------------- */
+void color_function(int value){
+    isSecond = false;
+	isEraser = false;
+    switch(value){
+        case WHITE:
+            red=green=blue=1.0;
+            break;
+        case BLACK:
+            red=green=blue=0.0;
+            break;
+        case RED:
+            red=1.0;
+            green=blue=0.0;
+            break;
+        case GREEN:
+            green=1.0;
+            red=blue=0.0;
+            break;
+        case YELLOW:
+            green=red=1.0;
+            blue=0.0;
+            break;
+        case BLUE:
+            green=red=0.0;
+            blue=1.0;
+            break;
+        case PURPLE:
+            red=blue=1.0;
+            green=0;
+            break;
+        case CYAN:
+            blue=green=1.0;
+            red=0.0;
+            break;
+        case RANDOM:
+            srand(time(NULL));
+            red=float(rand())/float(RAND_MAX);
+            green=float(rand())/float(RAND_MAX);
+            blue=float(rand())/float(RAND_MAX);
+            break;
     }
-    break;
-  case POLYGON:  /* Define vertices of poly */
-    if(side==0){
-      vertex[side][0] = x; vertex[side][1] = y;
-      side ++;
-    }else{
-      if(fabs(vertex[side-1][0]-x) + fabs(vertex[side-1][1]-y)<2)
-	    draw_polygon();
-      else{
-	    glBegin(GL_LINES);
-          glVertex2f(vertex[side-1][0], height-vertex[side-1][1]);
-	      glVertex2f(x, height-y);
-	    glEnd();
-	    vertex[side][0] = x; 
-		vertex[side][1] = y;
-	    side ++;
-      }
+} 
+/*----------------------------------------------------------------
+    Handles window reshaping.
+------------------------------------------------------------------*/
+void reshape_function(int newWidth,int newHeight){
+    windowWidth=newWidth;
+    windowHeight=newHeight;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0,newWidth,0,newHeight);
+    glMatrixMode(GL_MODELVIEW);
+    glViewport(0,0,newWidth,newHeight);
+    glutPostRedisplay();
+}
+/*----------------------------------------------------------------
+    Displaying function, from vector to glut buffer.
+------------------------------------------------------------------*/
+void display_function(){
+    glClearColor(bckColor[0],bckColor[1],bckColor[2],1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPointSize(2);
+    glBegin(GL_POINTS);
+    for(unsigned int i=0;i<currentPoints.size();i++){
+        glColor3f(currentPoints[i].getR(),currentPoints[i].getG(),currentPoints[i].getB());
+        glVertex2i(currentPoints[i].getX(),currentPoints[i].getY());
     }
-    break;
-  case CIRCLE:
-    pos_x = x; pos_y = y;
-    draw_circle();
-    break;
-  default:
-      break;
-  }
-  glFinish();
-}
-
-
-    
-/*-------------------------------------------------------------
- * motion callback function. The mouse is pressed and moved.
- */
-void motion_func(int  x, int y)
-{
-  if(obj_type!=CURVE) return;
-  if(first==0){
-    first = 1;
-    pos_x = x; pos_y = y;
-  }else{
-    glBegin(GL_LINES);
-      glVertex3f(pos_x, height-pos_y, 0.0);
-      glVertex3f(x, height - y, 0.0);
     glEnd();
-    pos_x = x; pos_y = y;
-  }
-  glFinish();
+    glutSwapBuffers();
 }
-
-/*--------------------------------------------------------
- * procedure to clear window
- */
-void init_window(void)
-{
-  /*Do nothing else but clear window to black*/
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluOrtho2D(0.0, (double) width, 0.0, (double) height);
-  glViewport(0,0,width, height);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  glClearColor(1.0, 1.0, 1.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-  glFlush();
+/*----------------------------------------------------------------
+    controls Quit and Clear
+------------------------------------------------------------------*/
+void menu_function(int value){
+    switch(value){
+        case QUIT:
+            printf("Thanks for using!\n");
+            exit(0);
+            break;
+        case CLEAR:
+            clear_function();
+            break;
+    }
 }
-
-
-/*------------------------------------------------------
- * Procedure to initialize data alighment and other stuff
- */
-void init_func()
-{   glReadBuffer(GL_FRONT);
-    glDrawBuffer(GL_FRONT);
-	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+/*----------------------------------------------------------------
+    Quick shortcuts for other functions
+------------------------------------------------------------------*/
+void keyboard_function(unsigned char key,int x,int y){
+    isSecond = false;
+    switch(key){
+        case 'q':
+        case 'Q':
+        case 27:
+            exit(0);
+            break;
+        case 'c':
+        case 'C':
+            clear_function();
+            break;
+        case 'u':
+        case 'U':
+            undo_function();
+            break;
+        case 'r':
+        case 'R':
+            redo_function();
+            break;
+    }
 }
-
-/*-----------------------------------------------------------------
- * Callback function for color menu
- */
-void  color_func(int value)
-{
-  switch(value){
-  case WHITE:
-    myColor[0] = myColor[1] = myColor[2] = 1.0;
-    break;
-
-  case RED:
-    myColor[0] = 1.0;
-    myColor[1] = myColor[2] = 0.0;
-    break;
-
-  case GREEN:
-    myColor[0] = myColor[2] = 0.0;
-    myColor[1] = 1.0;
-    break;
-    
-  case BLUE:
-    myColor[0] = myColor[1] = 0.0;
-    myColor[2] = 1.0;
-    break;
-
-  default:
-    break;
-  }
-  glColor3f(myColor[0], myColor[1], myColor[2]);
+/*----------------------------------------------------------------
+    Controls mouse activity
+------------------------------------------------------------------*/
+void mouse_function(int button,int state,int x,int y){
+    if(button==GLUT_LEFT_BUTTON&&state==GLUT_DOWN){
+        if(isEraser){
+            undoHistory.push_back(currentPoints.size());
+            erasePoint(x,y);
+        }
+        else{
+            if(currentShape==DOT){
+                undoHistory.push_back(currentPoints.size());
+                drawPoint(x,y);
+            }
+            else if(currentShape==AIRBRUSH){
+                undoHistory.push_back(currentPoints.size());
+                paintBrush(x, y);
+            }
+            else{
+                if(isSecond){
+                    if(undoHistory.back()!=currentPoints.size())undoHistory.push_back(currentPoints.size());
+                    if(currentShape==LINE)drawLine(firstX,firstY,x,y);
+                    else if(currentShape==RECTANGLE)drawRectangle(firstX,firstY,x,y);
+                    else if(currentShape==CIRCLE){
+                        int r=(int)sqrt(pow(firstX-x,2)+pow(firstY-y,2));
+                        drawCircle(firstX,firstY,r);
+                    }
+                    isSecond=false;
+                }
+                else{
+                    firstX=x;
+                    firstY=y;
+                    isSecond=true;
+                }
+            }
+        }
+        if(undoHistory.size()>20)undoHistory.pop_front();
+    }
 }
-
-
-/*------------------------------------------------------------
- * Callback function for top menu.
- */
-void file_func(int value)
-{ 
-  int i, j;
-
-  if(value==MY_QUIT) exit(0);
-  else if(value==MY_CLEAR) init_window();
-  else if(value==MY_SAVE){ /* Save current window */
-    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE,
-                 image);
-	for(i=0;i<width;i++)   /* Assign 0 opacity to black pixels */
-	  for(j=0;j<height;j++)
-		if(image[i*width+j][0]==0 &&
-           image[i*width+j][1]==0 &&
-           image[i*width+j][2]==0) image[i*width+j][3] = 0;
-		else image[i*width+j][3] = 127; /* Other pixels have A=127*/
-  }else if(value==MY_LOAD){ /* Restore the saved image */
-	 glRasterPos2i(0, 0);
-     glDrawPixels(width, height, 
-	       GL_RGBA, GL_UNSIGNED_BYTE, 
-	       image);
-  }else if(value==MY_BLEND){ /* Blending current image with the saved image */	
-	  glEnable(GL_BLEND); 
-	  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      glRasterPos2i(0, 0);
-      glDrawPixels(width, height, 
-	       GL_RGBA, GL_UNSIGNED_BYTE, 
-	       image);
-	  glDisable(GL_BLEND);
-  }
-
-  glFlush();
+/*----------------------------------------------------------------
+    Mouse motion activity
+------------------------------------------------------------------*/
+void motion_function(int x,int y){
+    if(isEraser)erasePoint(x,y);
+    else if(currentShape==DOT)drawPoint(x,y);
+    else if(currentShape==AIRBRUSH)paintBrush(x,y);
 }
-
-void size_func(int value)
-{
-	if(value==1){
-	  if(pnt_size<10.0) pnt_size += 1.0;
-	}else{
-	  if(pnt_size>1.0) pnt_size = pnt_size -1.0;
+/*----------------------------------------------------------------
+    Shapes function
+------------------------------------------------------------------*/
+void type_function(int value){
+    isSecond = false;
+    isEraser = false;
+    currentShape=value;
+}
+/*----------------------------------------------------------------
+    Choose the size of the eraser
+------------------------------------------------------------------*/
+void eraser_function(int value){
+    isEraser = true;
+    switch(value){
+        case BIG:
+            eraserSize = 12;
+            break;
+        case MEDIUM:
+            eraserSize = 7;
+            break;
+        case SMALL:
+            eraserSize=2;
+            break;
+    }
+}
+/*----------------------------------------------------------------
+    Redo and Undo function
+------------------------------------------------------------------*/
+void control_function(int value){
+    switch(value){
+        case UNDO:
+            undo_function();
+            break;
+        case REDO:
+            redo_function();
+            break;
+    }
+}
+/*----------------------------------------------------------------
+    clear everything and also redo undo history
+------------------------------------------------------------------*/
+void clear_function(){
+    currentPoints.clear();
+    undoHistory.clear();
+    redoHistory.clear();
+    redoPoints.clear();
+    glClear(GL_COLOR_BUFFER_BIT);
+	glutSwapBuffers();
+    printf("Everything successfully cleared.");
+    display_function();
+};
+/*----------------------------------------------------------------
+    decide whether fill or no fill 
+------------------------------------------------------------------*/
+void fillmode_function(int value){
+    fillMode=value==FILL?true:false;
+};
+/*----------------------------------------------------------------
+    Choose background color (white or black)
+------------------------------------------------------------------*/
+void backgroundcolor_function(int value){
+    switch(value){
+        case WHITE:
+            bckColor[0]=bckColor[1]=bckColor[2]=1.0;
+            break;
+        case BLACK:
+            bckColor[0]=bckColor[1]=bckColor[2]=0.0;
+            break;
+    }
+    display_function();
+};
+/*----------------------------------------------------------------
+    Actuall undo function. remembers the step of currentPoint to remmeber where to stop undoing. 
+------------------------------------------------------------------*/
+void undo_function(){
+    if(undoHistory.size()>0){
+        if(undoHistory.back()!=currentPoints.size()&&redoHistory.back()!=currentPoints.size())redoHistory.push_back(currentPoints.size());
+        int numSteps = currentPoints.size()-undoHistory.back();
+        for(int i=0;i<numSteps;i++){
+            redoPoints.push_back(currentPoints.back());
+            currentPoints.pop_back();
+        }
+        redoHistory.push_back(undoHistory.back());
+        undoHistory.pop_back();
+    }
+    else printf("You don't have any records left.\n");
+    display_function();
+}
+/*----------------------------------------------------------------
+    Actuall redo function. remembers the step of currentPoint to remmeber where to stop redoing. 
+------------------------------------------------------------------*/
+void redo_function(){
+    if(redoHistory.size()>1){
+        undoHistory.push_back(redoHistory.back());
+        redoHistory.pop_back();
+        int numRemove = redoHistory.back() - currentPoints.size();
+        for(int i=0;i<numRemove;i++){
+            currentPoints.push_back(redoPoints.back());
+            redoPoints.pop_back();
+        }
+    }
+    else printf("Can't redo. You haven't done anything further.\n");
+    display_function();
+}
+/*----------------------------------------------------------------
+    Draw a single dot.
+------------------------------------------------------------------*/
+void drawPoint(int xPos,int yPos){
+    if(isEraser) currentPoints.push_back(Point(xPos,windowHeight-yPos,bckColor[0],bckColor[1],bckColor[2]));
+    else currentPoints.push_back(Point(xPos,windowHeight-yPos,red,green,blue));
+}
+/*----------------------------------------------------------------
+    erase a part of canvas depends on the size 
+------------------------------------------------------------------*/
+void erasePoint(int x,int y){
+    for(int i=-1*eraserSize;i<=eraserSize;i++)for(int j=-1*eraserSize;j<=eraserSize;j++)drawPoint(x+i,y+j);
+}
+/*----------------------------------------------------------------
+    another type of brush, randomly put dots in a radius 
+------------------------------------------------------------------*/
+void paintBrush(int x,int y){
+    for(int i=0;i<5;i++){
+        int tempX = rand() % (brushSize) - brushSize / 2 + x;
+		int tempY = rand() % (brushSize) - brushSize / 2 + y;
+		drawPoint(tempX, tempY);
+    }
+}
+/*----------------------------------------------------------------
+    mid point circle Algorithm from Geeks4Geeks 
+------------------------------------------------------------------*/
+void drawCircle(int xCenter,int yCenter,int actRadius){
+    int radius;
+    radius=fillMode?0:actRadius;
+    for(int i=radius;i<=actRadius;i++){
+        int x=i,y=0;
+        drawPoint(x+xCenter,y+yCenter);
+        if(i>0){
+            drawPoint(x+xCenter,-y+yCenter);
+            drawPoint(y+xCenter,x+yCenter);
+            drawPoint(-y+xCenter,x+yCenter);
+        }
+        int P=1-i;
+        while(x>y){
+            y++;
+            //Mid point inside of perim
+            if(P<=0)P=P+2*y+1;
+            //Mid point out of perim
+            else{
+                x--;
+                P=P+2*y-2*x+1;
+            }
+            //If all done
+            if(x<y)break;
+            //Drawing the point and the reflection
+            drawPoint(x+xCenter,y+yCenter);
+            drawPoint(-x+xCenter,y+yCenter);
+            drawPoint(x+xCenter,-y+yCenter);
+            drawPoint(-x+xCenter,-y+yCenter);
+            //If the point os on the line x=y then
+            //the perimeter points have alredy been drawn 
+            if(x!=y){
+                drawPoint(y+xCenter,x+yCenter);
+                drawPoint(-y+xCenter,x+yCenter);
+                drawPoint(y+xCenter,-x+yCenter);
+                drawPoint(-y+xCenter,-x+yCenter);
+            }
+        }
+    }
+}
+/*----------------------------------------------------------------
+    Basically a lot of drawline. 
+------------------------------------------------------------------*/
+void drawRectangle(int x1,int y1,int x2,int y2){
+    if(fillMode){
+        if(y2<y1){
+            int temp=y2;
+            y2=y1;
+            y1=temp;
+        }
+        for(int i=y2;i>=y1;i--)drawLine(x1,i,x2,i);
+    }
+    else{
+        drawLine(x1, y1, x2, y1);
+		drawLine(x2, y1, x2, y2);
+		drawLine(x2, y2, x1, y2);
+		drawLine(x1, y2, x1, y1);
+    }
+}
+/*----------------------------------------------------------------
+    Bresenham's line generation algorithm, also from Geeks4Geeks 
+------------------------------------------------------------------*/
+void drawLine(int x1,int y1,int x2,int y2){
+    bool changed = false;
+	// Bresenham's line algorithm is only good when abs(dx) >= abs(dy)
+	// So when abs(dx) < abs(dy), change axis x and y
+	if (abs(x2 - x1) < abs(y2 - y1)){
+		int tmp1 = x1;
+		x1 = y1;
+		y1 = tmp1;
+		int tmp2 = x2;
+		x2 = y2;
+		y2 = tmp2;
+		changed = true;
 	}
-}
-
-/*---------------------------------------------------------------
- * Callback function for top menu. Do nothing.
- */
-void top_menu_func(int value)
-{
-}
-
-
-/*-------------------------------------------------------------
- * Callback Func for type_m, define drawing object
- */
-void draw_type(int value)
-{
-  obj_type = value;
-  if(value==LINE||value==CURVE)
-    first = 0;
-  else if(value==POLYGON) side = 0;
-}
-
-
-/*---------------------------------------------------------------
- * Main procedure sets up the window environment.
- */
-int main(int argc, char **argv)
-{
-  int  size_menu;
-
-  glutInit(&argc, argv);    /*---Make connection with server---*/
-
-  glutInitWindowPosition(0,0);  /*---Specify window position ---*/
-  glutInitWindowSize(width, height); /*--Define window's height and width--*/
-
-  glutInitDisplayMode(GLUT_SINGLE|GLUT_RGBA); /*---set display mode---*/
-  init_func();
-
-   /* Create parent window */
-  glutCreateWindow("Menu"); 
-
-  glutDisplayFunc(display_func); /* Associate display event callback func */
-  glutReshapeFunc(my_reshape);  /* Associate reshape event callback func */
-
-  glutKeyboardFunc(keyboard); /* Callback func for keyboard event */
-
-  glutMouseFunc(mouse_func);  /* Mouse Button Callback func */
-  glutMotionFunc(motion_func);/* Mouse motion event callback func */
-
-  color_m = glutCreateMenu(color_func); /* Create color-menu */
-  glutAddMenuEntry("white", WHITE);
-  glutAddMenuEntry("red", RED);
-  glutAddMenuEntry("green", GREEN);
-  glutAddMenuEntry("blue", BLUE);
-
-  file_m = glutCreateMenu(file_func);   /* Create another menu, file-menu */
-  glutAddMenuEntry("save", MY_SAVE);
-  glutAddMenuEntry("load", MY_LOAD);
-  glutAddMenuEntry("blend", MY_BLEND);
-  glutAddMenuEntry("clear", MY_CLEAR);
-  glutAddMenuEntry("quit", MY_QUIT);
-
-  type_m = glutCreateMenu(draw_type);   /* Create draw-type menu */
-  glutAddMenuEntry("Point", POINT);
-  glutAddMenuEntry("Line", LINE);
-  glutAddMenuEntry("Poly", POLYGON);
-  glutAddMenuEntry("Curve", CURVE);
-  glutAddMenuEntry("Circle", CIRCLE);
-
-  size_menu = glutCreateMenu(size_func);
-  glutAddMenuEntry("Bigger", 1);
-  glutAddMenuEntry("Smaller",2);
-
-  top_m = glutCreateMenu(top_menu_func);/* Create top menu */
-  glutAddSubMenu("colors", color_m);    /* add color-menu as a sub-menu */
-  glutAddSubMenu("type", type_m);
-  glutAddSubMenu("Size", size_menu);
-  glutAddSubMenu("file", file_m);       /* add file-menu as a sub-menu */
-  glutAttachMenu(GLUT_RIGHT_BUTTON);    /* associate top-menu with right but*/
-
-  /*---Test whether overlay support is available --*/
-  if(glutLayerGet(GLUT_OVERLAY_POSSIBLE)){
-    fprintf(stderr,"Overlay is available\n");
-  }else{
-    fprintf(stderr,"Overlay is NOT available, May encounter problems for menu\n");
-  }
-  /*---Enter the event loop ----*/
-  glutMainLoop();       
+	int dx = x2 - x1;
+	int dy = y2 - y1;
+	int yi = 1;
+	int xi = 1;
+	if (dy < 0){
+		yi = -1;
+		dy = -dy;
+	}
+	if (dx < 0){
+		xi = -1;
+		dx = -dx;
+	}
+	int d = 2 * dy - dx;
+	int incrE = dy * 2;
+	int incrNE = 2 * dy - 2 * dx;
+	int x = x1, y = y1;
+	if (changed)drawPoint(y, x);
+	else drawPoint(x, y);
+	while (x != x2){
+		if (d <= 0)d += incrE;
+		else{
+			d += incrNE;
+			y += yi;
+		}
+		x += xi;
+		if (changed)drawPoint(y, x);
+		else drawPoint(x, y);
+	}
 }
