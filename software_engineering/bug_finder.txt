@@ -1,0 +1,40 @@
+信箱認證API:
+    送出認證碼給目標信箱 用戶跳出輸入認證碼的畫面 使用者輸入收到的認證碼 比對正確或錯誤
+登入:
+    使用者填入信箱和密碼按下登入案件送出兩筆字串去讓後端用 auth table 比對是否都在 table 內且兩筆都屬於同一個 userID 成功的話就跳轉至選擇職位頁面 失敗的話就顯示錯誤訊息並回到登入畫面
+忘記密碼:
+    使用者填入信箱按下送出後 將信箱送到後端比對此信箱是否在 auth table 中 如果在的話 就呼叫認證信箱API 如果不在就顯示錯誤訊息回到輸入信箱畫面 若是認證成功就跳轉至修改密碼頁面 請使用者輸入新密碼然後再輸入一次 如果認證錯誤就跳回輸入信箱頁面 如果輸入新密碼重複錯誤就請他再重複輸入一次 如果輸入正確就送密碼和信箱回去給後端將auth table 中 信箱符合的 userID 的密碼修改為新的密碼 最後跳轉至選擇職業畫面
+
+申請帳號:
+    使用者填入必要內容 按下送出 前端先檢查是否為學校信箱 如果是的話就呼叫信箱認證API 認證成功就將基本資料送到後端新增進入user info table 和 auth table
+
+搜尋事件:
+    使用者點開主畫面右下的放大鏡 開啟浮動視窗 輸入起點終點或車手名稱 點開篩選可以選條件 按下送出會將資料和userID送到後端 將資料與current event table 比對 將符合的 event 的所有內容、event 中 司機的詳細資料 透過 event 中的 driver_id 參照 user info table 的該車手內容、然後根據userID從reject table 搜尋在條件中被拒絕過的事件然後將其狀態由白色轉為紅色、傳入前端 前端接收後 顯示於畫面上
+請求事件:
+    使用者點擊任事件 點擊查意搜尋顯示出的看詳細資訊 查看車主照片 輸入額外需求點擊送出 前端先將時間點送給後端進入alert table檢查時間點是否重復 回傳true false 若傳回false 將警告使用者是否繼續  若傳回true 前端將 userID、額外需求字串、eventID、其他資料 傳入後端 後端將資料寫入 request table 和 寫入該event driver id(用event id 去 eveent table 查 driver id)的 inform table 內容， 將訊息推播至driver端 
+同意/拒絕 事件:
+    車手收到info table 有更新的內容警示 點開小鈴鐺點擊該警示 或是 回到主畫面點擊該事件card跳出用eventID 搜尋request table 然後用request table 的 passengerID 去 user info table 搜尋的乘客資料、順便將是否有多個request的 booling 值 將其全部打包一起送回前端顯示的該 event 請求 list ， 點擊任一 card 會將乘客資料和request內容顯示並點擊接受或拒絕 點擊接受時會去檢查傳回來的request布林值是否為true 為true 代表有多筆對這個event 的request存在 所以會警示車手 如果經過警告後同仍同意便會將除了車手同意的這個request 之外全部自動拒絕 如果點擊拒絕目前顯示的申請 會先請車手填寫拒絕原因 然後將原因和此PassengerID 傳給後端將此request 從 request table 中刪除 然後再 reject table 中 passenger ID 的欄位中新增此 eventID 的key 和其原因 然後更新 info table 中 passengerID 的 passenger Context 欄位 填入此eventID 和 driverID 狀態為拒絕 然後警示該passenger   拒絕全部其他的流程與此相同 同意是將passengerID 和 eventID 傳回後台 參照request table中 的項目更新event table 中該eventID的內容 然後更新 info table 中 passengerID 的 passenger context  status為同意 存入eventID 然後警示passenger 有人同意他的請求
+修改/查看個人資料事件:
+    用戶點擊個人資料 前端向後端送出userID請求資料 後端用userID去user info table 查找資料送回前端顯示 若按下修改案件 填寫修改內容 將所有資料和其userID傳入後端 後端根據傳回來的資料更新 user info table
+查看歷史資料事件:
+    用戶點擊歷史資料 前端將userID 傳到後端要求該用戶的歷史事件 後端利用 past event table 搜尋與該用戶相關的所有event還有與該event相關的對方人員的詳細資料傳回去前端建構資料
+評分系統:
+    前端顯示評分星星 按下送出後將對象userID(從eventID中得到) 和 評分 送給後端讓後端在 user info table 中計算更新該用戶評分 修改對象inform table 的 context 內容然後 警示目標
+變更職位事件:
+    用戶按下對應職位切換到對應的activity
+
+正常結束event事件:
+    車手按下event的結束按鈕 前端送出eventID給後端 後端將current event table 中對應的event移動至 past event table 狀態改成灰色 更新兩邊的inform table 通知已經結束
+非正常結束evnet事件:
+    車手或乘客按下對應事件的drop按鈕 將 eventID 送去給後端將current event table 中對應的event移動至 past event table 狀態改成紅色 更新兩邊的inform table 通知不正常結束
+主畫面顯示:
+    乘客(顯示 紅色/綠色/白色):
+        前端將UserID傳給後端  (紅色[被拒絕的事件])後端用userID在reject list 中 找到 對應的event ID 和 拒絕原因 用eventID去 current event table 找 event 相關資料 (白色[以送出請求未回應])後端用 userID 在 request table 裡面找與 userID 相關的請求 得到 eventID 去current event table 找 event 相關資訊 (綠色[車手已同意 事件還未結束])帶著userID 去 current event table 尋找passengerID 是userID的event 的相關資訊  後端將所有東西配著對應的顏色狀態打包送回前端 前端顯示     
+    車手(顯示 白色/綠色):
+        前端將userID 傳給後端 (白色[未確定乘客])在current event table 中尋找 driver ID 為 userID 的event 且狀態為白色的事件和其相關資料 (綠色[已確定乘客])在current event table 中尋找 driver ID 為 userID 的event 且狀態為綠色的事件和其相關資料  後端打包送到前端顯示
+
+車手事件創建:
+    車手選擇+號 開啟浮動視窗 將事件細節填入 車手按下送出 前端先將輸入的時間區間傳給後端 後端接收時間區間進入alert table檢查時間點是否重複 回傳布林 如果傳回false 前端將警告車手是否繼續 繼續的話就將event相關資訊全部打包送給後端 後端接收資訊 新增新的event 進入 current event list 新增新的事件
+
+小鈴鐺顯示:
+    使用者點擊小鈴鐺 前端將userID 送到後端請求小鈴鐺資料 後端用userID 去 inform table 將該user 所有資料(職位/狀態/eventID/內容)打包給前端 前端顯示
