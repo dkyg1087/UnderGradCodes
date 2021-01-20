@@ -242,14 +242,12 @@ void draw_cube()
 {
   int    i;
   float  range;
-
   glMatrixMode(GL_TEXTURE);
   glLoadIdentity();
   glRotatef(textAng, 0, 0, 1);
  // glTranslatef(ds, dt, 0.0);
   glScalef(1.0, 3.0, 1.0);
   glMatrixMode(GL_MODELVIEW);
-
   for(i=0;i<6;i++){     /* draw the six faces one by one */
     range = 1.0;
     glNormal3fv(normal[i]);
