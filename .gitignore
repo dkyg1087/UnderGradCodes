@@ -1,0 +1,9 @@
+.vscode/
+.ipynb_checkpoints/
+.gitattributes
+__pycache__/
+*.txt
+*.mp4
+*.exe
+*.a
+Computer_vision/comp-vision/
