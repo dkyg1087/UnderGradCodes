@@ -125,7 +125,6 @@ void displayFunction(){
     glScalef(0.4,0.4,0.4);
     drawPropeller('r');
     glPopMatrix();
-    /*TODO the main thing.*/
     glutSwapBuffers();
     glFlush();
     return;
