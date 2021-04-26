@@ -1,17 +1,15 @@
-{            
+{
     "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "echo",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-g", "${fileBasename}", "-o", "${fileBasenameNoExtension}" ,"-lglut32", "-lopengl32" ,"-lglu32" ,"-lfreeglut"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+    "tasks": [{
+        "label": "build",
+        "type": "shell",
+        "command": "g++",
+        "args": [
+            "-g", "${file}", "-o", "${relativeFileDirname}\\${fileBasenameNoExtension}.exe"
+        ],
+        "group": {
+            "kind": "build",
+            "isDefault": true
         }
-    ]
+    }]
 }
