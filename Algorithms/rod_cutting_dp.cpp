@@ -1,6 +1,8 @@
 #include<iostream>
 #include<algorithm>
+
 using namespace std;
+
 int main(){
     int n,temp1,temp2,arr[50001]={},q=-10000;
     cin>>n;
@@ -18,4 +20,5 @@ int main(){
         ans[j]=q;
     }
     cout<<ans[n]<<endl;
+    return 0;
 }
