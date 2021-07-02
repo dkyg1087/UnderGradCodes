@@ -17,7 +17,7 @@ pair<int,int> getBoardPosistion(int i){
     b = i%6;
     return make_pair(a,b);
 }
-int getStateValue(string state,int player){
+int countPlayerPieces(string state,int player){
     char player_piece = player == 1 ? 'X' : 'O';
     int player_point = 0, opponent_point = 0;
     for(int i=0;i<state.length();i++){
@@ -25,8 +25,17 @@ int getStateValue(string state,int player){
         else if (state[i]== '+')continue;
         else opponent_point++;
     }
-    // cout<<"counting state value for player "<<player<<" with a value of "<<player_point - opponent_point<<endl;
     return player_point - opponent_point;
+}
+int monteCarlo(string state,int player){
+    return 0;
+}
+int opponentLeftMoves(string state,int player){
+    return 0;
+}
+int getStateValue(string state,int player,int pos){   // monte-carlo , opponnent left moves , table value , piece count
+    int countPieces = countPlayerPieces(state,player);
+    int monte_carlo =
 }
 
 int countFlipPieces(string state,int player,int string_pos,int direction){
@@ -98,7 +107,7 @@ pair<int,int> getNextStep(string state,int player,int depth,bool targ,int real_p
                 // cout<<"player "<<player<<" found available move "<<i<<" "<<j<<endl;
                 flag = false;
                 if(depth == 0){
-                    return make_pair(getStateValue(flipPieces(state,player,pos),real_player),pos);
+                    return make_pair(getStateValue(flipPieces(state,player,pos),real_player,pos),pos);
                 }
                 else{
                     value[pos] = getNextStep(flipPieces(state,player,pos),player == 1 ? 2 : 1,depth-1,!targ,real_player).first;
