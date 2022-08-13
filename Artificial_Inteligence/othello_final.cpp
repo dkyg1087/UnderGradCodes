@@ -145,43 +145,19 @@ pair<int,int> getNextStep(string state,int player,int depth,bool targ,int real_p
             move_set[moves++]=pos;
         }
     }
-    // for(int i=0;i<moves;i++){
-    //     if(move_set[i]==0){
-    //         move_set[0]=0;
-    //         moves=1;
-    //         break;
-    //     }
-    //     if(move_set[i]==SIZE-1){
-    //         move_set[0]=SIZE-1;
-    //         moves=1;
-    //         break;
-    //     }
-    //     if(move_set[i]==SIZE*SIZE-1){
-    //         move_set[0]=SIZE*SIZE-1;
-    //         moves=1;
-    //         break;
-    //     }
-    //     if(move_set[i]==SIZE*SIZE-SIZE){
-    //         move_set[0]=SIZE*SIZE-1;
-    //         moves=1;
-    //         break;
-    //     }
-    // }
-    //if(depth >= 3)cout<<"Depth : "<<depth<<" Found moves "<<moves<<endl;
-    // if(moves >= 8){
-    //     cout<<moves<<endl;
-    // }
     if(flag){
         if(skip_count >= 2){
+            //cout<<"skipped Twice!"<<endl;
             return make_pair(getStateValue(state,real_player,last_pos),last_pos);
-            cout<<"skipped Twice!"<<endl;
+        }
+        if(depth==7){
+            return make_pair(-1,-1);
         }
         return getNextStep(state,player == 1 ? 2 : 1,depth-1,!targ,real_player,last_pos,current_alpha,current_beta,++skip_count);
     }
     for(int i=0;i<moves;i++){
         if(skip_count>0)skip_count=0;
         if(current_alpha >= current_beta){
-            //cout<<"pruned!!!!!"<<endl;
             return make_pair(targ?current_alpha:current_beta,last_pos);
         }
         if(depth <= 0){
@@ -254,6 +230,10 @@ int main(){
             while(cin>>cmd){
                 if(cmd=="skip")break;
                 int pos=getStringPosistion(cmd[0]-'A',cmd[1]-'a');
+                if(!isLegalMove(state,1,pos)){
+                    cout<<"This is not a legal move"<<endl;
+                    continue;
+                }
                 state = flipPieces(state,1,pos);
                 for(int i=0;i<SIZE*SIZE;i++){
                     if(i%SIZE==0)cout<<endl;
@@ -274,16 +254,21 @@ int main(){
                 return 0;
             }
             {
-            pair<int,int> play = getNextStep(state,2,8,MAX,1,-1,INT32_MIN,INT32_MAX,0);
-            state = flipPieces(state,2,play.second);
-            char board_row = getBoardPosistion(play.second).first + 'A';
-            char board_col = getBoardPosistion(play.second).second + 'a';
-            cout<<"Player two plays "<<board_row<<board_col<<endl;
-            for(int i=0;i<SIZE*SIZE;i++){
-                if(i%SIZE==0)cout<<endl;
-                cout<<state[i]<<" ";
+            pair<int,int> play = getNextStep(state,2,7,MAX,1,-1,INT32_MIN,INT32_MAX,0);
+            if(play.second==-1){
+                cout<<"Player two choose to skip"<<endl<<endl;
             }
-            cout<<endl;
+            else{
+                state = flipPieces(state,2,play.second);
+                char board_row = getBoardPosistion(play.second).first + 'A';
+                char board_col = getBoardPosistion(play.second).second + 'a';
+                cout<<"Player two plays "<<board_row<<board_col<<endl;
+                for(int i=0;i<SIZE*SIZE;i++){
+                    if(i%SIZE==0)cout<<endl;
+                    cout<<state[i]<<" ";
+                }
+                cout<<endl;
+            }
             }
         }
         else if(BorW==2){
@@ -299,16 +284,21 @@ int main(){
                 return 0;
             }
             {
-            pair<int,int> play = getNextStep(state,1,8,MAX,1,-1,INT32_MIN,INT32_MAX,0);
-            state = flipPieces(state,1,play.second);
-            char board_row = getBoardPosistion(play.second).first + 'A';
-            char board_col = getBoardPosistion(play.second).second + 'a';
-            cout<<"Player two plays "<<board_row<<board_col<<endl;
-            for(int i=0;i<SIZE*SIZE;i++){
-                if(i%SIZE==0)cout<<endl;
-                cout<<state[i]<<" ";
+            pair<int,int> play = getNextStep(state,1,7,MAX,1,-1,INT32_MIN,INT32_MAX,0);
+            if(play.second==-1){
+                cout<<"Player two choose to skip"<<endl<<endl;
             }
-            cout<<endl;
+            else{
+                state = flipPieces(state,1,play.second);
+                char board_row = getBoardPosistion(play.second).first + 'A';
+                char board_col = getBoardPosistion(play.second).second + 'a';
+                cout<<"Player two plays "<<board_row<<board_col<<endl;
+                for(int i=0;i<SIZE*SIZE;i++){
+                    if(i%SIZE==0)cout<<endl;
+                        cout<<state[i]<<" ";
+                }
+                cout<<endl;
+            }
             }
             if(isEnd(state)){
                 int black=0,white=0;
@@ -324,6 +314,10 @@ int main(){
             while(cin>>cmd){
                 if(cmd=="skip")break;
                 int pos=getStringPosistion(cmd[0]-'A',cmd[1]-'a');
+                if(!isLegalMove(state,2,pos)){
+                    cout<<"This is not a legal move"<<endl;
+                    continue;
+                }
                 state = flipPieces(state,2,pos);
                 for(int i=0;i<SIZE*SIZE;i++){
                     if(i%SIZE==0)cout<<endl;
@@ -346,15 +340,20 @@ int main(){
                 return 0;
             }
             pair<int,int> play = getNextStep(state,1,7,MAX,1,-1,INT32_MIN,INT32_MAX,0);
-            state = flipPieces(state,1,play.second);
-            char board_row = getBoardPosistion(play.second).first + 'A';
-            char board_col = getBoardPosistion(play.second).second + 'a';
-            cout<<"Player one plays "<<board_row<<board_col<<" "<<play.first<<endl;
-            for(int i=0;i<SIZE*SIZE;i++){
-                if(i%SIZE==0)cout<<endl;
-                cout<<state[i]<<" ";
+            if(play.second==-1){
+                cout<<"Player one choose to skip"<<endl<<endl;
             }
+            else{
+                state = flipPieces(state,1,play.second);
+                char board_row = getBoardPosistion(play.second).first + 'A';
+                char board_col = getBoardPosistion(play.second).second + 'a';
+                cout<<"Player one plays "<<board_row<<board_col<<" "<<play.first<<endl;
+                for(int i=0;i<SIZE*SIZE;i++){
+                    if(i%SIZE==0)cout<<endl;
+                    cout<<state[i]<<" ";
+                }
             cout<<endl;
+            }
             if(isEnd(state)){
                 int black=0,white=0;
                 for(int i=0;i<SIZE*SIZE;i++){
@@ -368,15 +367,20 @@ int main(){
             }
             {
                 pair<int,int> play = getNextStep(state,2,7,MAX,1,-1,INT32_MIN,INT32_MAX,0);
-                state = flipPieces(state,2,play.second);
-                char board_row = getBoardPosistion(play.second).first + 'A';
-                char board_col = getBoardPosistion(play.second).second + 'a';
-                cout<<"Player two plays "<<board_row<<board_col<<" "<<play.first<<endl;
-                for(int i=0;i<SIZE*SIZE;i++){
-                    if(i%SIZE==0)cout<<endl;
-                    cout<<state[i]<<" ";
+                if(play.second==-1){
+                    cout<<"Player two choose to skip"<<endl<<endl;
                 }
-                cout<<endl;
+                else{
+                    state = flipPieces(state,2,play.second);
+                    char board_row = getBoardPosistion(play.second).first + 'A';
+                    char board_col = getBoardPosistion(play.second).second + 'a';
+                    cout<<"Player two plays "<<board_row<<board_col<<" "<<play.first<<endl;
+                    for(int i=0;i<SIZE*SIZE;i++){
+                    if(i%SIZE==0)cout<<endl;
+                        cout<<state[i]<<" ";
+                    }
+                    cout<<endl;
+                }
             }
             cout<<endl;
         }
